@@ -1,0 +1,36 @@
+name: CI Workflow
+
+on:
+  push:
+    branches:
+      - develop
+      - release/*
+      - feature/*
+  pull_request:
+    branches:
+      - develop
+      - release/*
+      - feature/*
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build with Maven
+        run: mvn -B test
+
+      - name: Publish Test Report
+        if: success() || failure()  # Always run this step, whether tests pass or fail
+        uses: scacap/action-surefire-report@v1
+        with:
+          report_paths: '**/target/surefire-reports/*.xml'
