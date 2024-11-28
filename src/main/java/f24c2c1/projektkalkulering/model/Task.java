@@ -4,7 +4,7 @@
  * Description: Defines the contract for a Task entity with methods for managing
  *              task attributes such as name, description, dates, and subtasks.
  *
- * Author:      Kenneth (kvasirsg)
+ * Author:      Kenneth (KvasirSG)
  * Created:     2024-11-28
  * Updated:     2024-11-28
  * Version:     1.0

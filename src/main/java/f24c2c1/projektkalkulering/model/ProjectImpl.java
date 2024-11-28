@@ -4,7 +4,7 @@
  * Description: Implementation of the Project interface, representing a project entity
  *              with attributes like name, description, dates, creator, tasks, and subprojects.
  *
- * Author:      Kenneth (kvasirsg)
+ * Author:      Kenneth (KvasirSG)
  * Created:     2024-11-28
  * Updated:     2024-11-28
  * Version:     1.0
