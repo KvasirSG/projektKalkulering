@@ -172,13 +172,11 @@ public class ProjectRepository {
 
     // Factory methods to dynamically create instances of the interfaces
     private Project createProjectInstance() {
-        // Replace with a real implementation when available
-        throw new UnsupportedOperationException("Project instance creation not implemented");
+        return new ProjectImpl();
     }
 
     private User createUserInstance() {
-        // Replace with a real implementation when available
-        throw new UnsupportedOperationException("User instance creation not implemented");
+        return new UserImpl();
     }
 
     private Task createTaskInstance() {
