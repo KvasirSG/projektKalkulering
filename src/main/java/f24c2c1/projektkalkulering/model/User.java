@@ -21,8 +21,8 @@
 package f24c2c1.projektkalkulering.model;
 
 public interface User {
-    Long getId();
-    void setId(Long id);
+    long getId();
+    void setId(long id);
 
     String getEmail();
     void setEmail(String email);
