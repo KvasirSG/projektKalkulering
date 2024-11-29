@@ -1,6 +1,7 @@
 package f24c2c1.projektkalkulering.repository;
 
 import f24c2c1.projektkalkulering.model.User;
+import f24c2c1.projektkalkulering.model.UserImpl;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
