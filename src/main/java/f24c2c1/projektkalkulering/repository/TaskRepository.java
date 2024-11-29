@@ -1,3 +1,24 @@
+/*
+ * ===================================================================================
+ * File:        TaskRepository.java
+ * Description: Repository for managing Task entities in the database using Spring's
+ *              JdbcTemplate. Provides CRUD operations and SQL mappings for Task.
+ *
+ * Author:      Sebastian (Duofour)
+ * Created:     2024-11-28
+ * Updated:     2024-11-29
+ * Version:     1.0
+ *
+ * License:     MIT License
+ *
+ * Notes:       - This repository supports operations for the Task interface.
+ *              - The TaskRowMapper maps SQL query results to Task implementations.
+ *              - SQL statements assume a database schema matching the Task model
+ *                with fields like `id`, `name`, `description`, `status`, etc.
+ *              - Ensure database transactions are handled appropriately for batch
+ *                or multi-step operations.
+ * ===================================================================================
+ */
 package f24c2c1.projektkalkulering.repository;
 
 import f24c2c1.projektkalkulering.model.Task;

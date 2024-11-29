@@ -1,3 +1,25 @@
+/*
+ * ===================================================================================
+ * File:        TaskImpl.java
+ * Description: Concrete implementation of the Task interface, representing an
+ *              individual task within a project. Includes attributes for task
+ *              metadata, status, time estimates, and subtask relationships.
+ *
+ * Author:      Sebastian (Duofour)
+ * Created:     2024-11-28
+ * Updated:     2024-11-29
+ * Version:     1.0
+ *
+ * License:     MIT License
+ *
+ * Notes:       - This implementation provides default behavior for the methods
+ *                defined in the Task interface.
+ *              - Subtasks are managed via a list, allowing hierarchical task
+ *                structures.
+ *              - Time fields (startDate, endDate) and estimate are represented
+ *                in hours and should be validated in business logic.
+ * ===================================================================================
+ */
 package f24c2c1.projektkalkulering.model;
 
 import java.util.ArrayList;
