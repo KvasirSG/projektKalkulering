@@ -5,7 +5,7 @@
  *              of a user entity with attributes such as ID, email, name, password, and role.
  *
  * Author:      Kenneth (KvasirSG)
- * Created:     2024-11-28
+ * Created:     2024-11-27
  * Updated:     2024-11-28
  * Version:     1.0
  *
