@@ -1,3 +1,27 @@
+/*
+ * ===================================================================================
+ * File:        ProjectRepository.java
+ * Description: Repository for managing Project entities and their relationships
+ *              with Tasks, Subprojects, and Users in the database using Spring's
+ *              JdbcTemplate.
+ *
+ * Author:      Kenneth (KvasirSG)
+ * Created:     2024-11-28
+ * Updated:     2024-11-29
+ * Version:     1.0
+ *
+ * License:     MIT License
+ *
+ * Notes:       - This repository provides CRUD operations for Project entities,
+ *                including related tasks and subprojects.
+ *              - The ProjectRowMapper maps database rows to Project instances.
+ *              - Factory methods (createProjectInstance, createUserInstance,
+ *                createTaskInstance) are used for flexibility in handling
+ *                interface-based entity models.
+ *              - Ensure that database transactions are properly managed for
+ *                complex operations involving multiple entities.
+ * ===================================================================================
+ */
 package f24c2c1.projektkalkulering.repository;
 
 import f24c2c1.projektkalkulering.model.*;
@@ -180,8 +204,7 @@ public class ProjectRepository {
     }
 
     private Task createTaskInstance() {
-        // Replace with a real implementation when available
-        throw new UnsupportedOperationException("Task instance creation not implemented");
+       return new TaskImpl();
     }
 }
 
