@@ -231,7 +231,7 @@ public class ProjectRepository {
     }
 
     private Client createClientInstance() {
-        throw new UnsupportedOperationException("Clientimpl not integrated yet");
+        return new ClientImpl();
     }
 }
 
