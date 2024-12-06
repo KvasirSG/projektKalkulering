@@ -6,7 +6,7 @@
  *
  * Author:      Kenneth (KvasirSG)
  * Created:     2024-11-28
- * Updated:     2024-11-28
+ * Updated:     2024-12-06
  * Version:     1.0
  *
  * License:     MIT License
@@ -30,6 +30,7 @@ public class ProjectImpl implements Project {
     private Date startDate;
     private Date endDate;
     private User creator;
+    private Client client;
     private boolean isSubproject;
     private List<Task> tasks;
     private List<Project> subprojects;
@@ -103,7 +104,14 @@ public class ProjectImpl implements Project {
     public void setCreator(User creator) {
         this.creator = creator;
     }
-
+    @Override
+    public Client getClient() {
+        return client;
+    }
+    @Override
+    public void setClient(Client client) {
+        this.client = client;
+    }
     @Override
     public Boolean isSubProject() {
         return isSubproject;

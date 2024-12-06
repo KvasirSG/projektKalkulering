@@ -7,7 +7,7 @@
  *
  * Author:      Kenneth (KvasirSG)
  * Created:     2024-11-28
- * Updated:     2024-11-28
+ * Updated:     2024-12-06
  * Version:     1.0
  *
  * License:     MIT License
@@ -42,6 +42,8 @@ public interface Project {
     void setEndDate(Date endDate);
     User getCreator();
     void setCreator(User creator);
+    Client getClient();
+    void setClient(Client client);
     Boolean isSubProject();
     void setSubProject(Boolean subProject);
     List<Project> getSubProjects();
