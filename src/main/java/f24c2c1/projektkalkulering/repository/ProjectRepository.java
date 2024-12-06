@@ -1,3 +1,27 @@
+/*
+ * ===================================================================================
+ * File:        ProjectRepository.java
+ * Description: Repository for managing Project entities and their relationships
+ *              with Tasks, Subprojects, and Users in the database using Spring's
+ *              JdbcTemplate.
+ *
+ * Author:      Kenneth (KvasirSG)
+ * Created:     2024-11-28
+ * Updated:     2024-12-06
+ * Version:     1.0
+ *
+ * License:     MIT License
+ *
+ * Notes:       - This repository provides CRUD operations for Project entities,
+ *                including related tasks and subprojects.
+ *              - The ProjectRowMapper maps database rows to Project instances.
+ *              - Factory methods (createProjectInstance, createUserInstance,
+ *                createTaskInstance) are used for flexibility in handling
+ *                interface-based entity models.
+ *              - Ensure that database transactions are properly managed for
+ *                complex operations involving multiple entities.
+ * ===================================================================================
+ */
 package f24c2c1.projektkalkulering.repository;
 
 import f24c2c1.projektkalkulering.model.*;
@@ -19,7 +43,7 @@ public class ProjectRepository {
     }
 
     public void save(Project project) {
-        String sql = "INSERT INTO projects (name, description, creation_date, start_date, end_date, creator_id, is_subproject) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO projects (name, description, creation_date, start_date, end_date, creator_id, client_id, is_subproject) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql,
                 project.getName(),
                 project.getDescription(),
@@ -27,6 +51,7 @@ public class ProjectRepository {
                 project.getStartDate(),
                 project.getEndDate(),
                 project.getCreator() != null ? project.getCreator().getId() : null,
+                project.getClient() != null ? project.getClient().getId() : null,
                 project.isSubProject());
 
         // Save tasks and subprojects
@@ -45,7 +70,7 @@ public class ProjectRepository {
     }
 
     public void update(Project project) {
-        String sql = "UPDATE projects SET name = ?, description = ?, creation_date = ?, start_date = ?, end_date = ?, creator_id = ?, is_subproject = ? WHERE id = ?";
+        String sql = "UPDATE projects SET name = ?, description = ?, creation_date = ?, start_date = ?, end_date = ?, creator_id = ?,client_id = ?, is_subproject = ? WHERE id = ?";
         jdbcTemplate.update(sql,
                 project.getName(),
                 project.getDescription(),
@@ -53,6 +78,7 @@ public class ProjectRepository {
                 project.getStartDate(),
                 project.getEndDate(),
                 project.getCreator() != null ? project.getCreator().getId() : null,
+                project.getClient() != null ? project.getClient().getId() : null,
                 project.isSubProject(),
                 project.getId());
 
@@ -128,10 +154,31 @@ public class ProjectRepository {
                 project.setCreator(fetchCreator(creatorId));
             }
 
+            long clientId = rs.getLong("client_id");
+            if (clientId > 0) {
+                project.setClient(fetchClient(clientId));
+            }
+
             project.setTasks(fetchTasks(project.getId()));
             project.setSubProjects(fetchSubprojects(project.getId()));
 
             return project;
+        }
+
+        private Client fetchClient(long clientId) {
+            String sql = "SELECT * FROM clients WHERE id = ?";
+            return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> {
+                Client client = createClientInstance();
+                client.setId(rs.getLong("id"));
+                client.setName(rs.getString("name"));
+                client.setEmail(rs.getString("email"));
+                client.setAddress(rs.getString("address"));
+                client.setCity(rs.getString("city"));
+                client.setZip(rs.getString("zip"));
+                client.setContactName(rs.getString("contact_name"));
+                client.setPhone(rs.getString("phone"));
+                return client;
+            }, clientId);
         }
 
         private User fetchCreator(long creatorId) {
@@ -180,8 +227,11 @@ public class ProjectRepository {
     }
 
     private Task createTaskInstance() {
-        // Replace with a real implementation when available
-        throw new UnsupportedOperationException("Task instance creation not implemented");
+       return new TaskImpl();
+    }
+
+    private Client createClientInstance() {
+        throw new UnsupportedOperationException("Clientimpl not integrated yet");
     }
 }
 
