@@ -213,7 +213,7 @@ public class ProjectRepository {
 
         private List<Project> fetchSubprojects(long projectId) {
             String sql = "SELECT subproject_id FROM subprojects WHERE project_id = ?";
-            return jdbcTemplate.query(sql, (rs, rowNum) -> findById(rs.getLong("subproject_id")));
+            return jdbcTemplate.query(sql, (rs, rowNum) -> findById(rs.getLong("subproject_id")),projectId);
         }
     }
 

@@ -22,8 +22,10 @@ package f24c2c1.projektkalkulering.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 
 /**
  * Configuration class for setting up security-related beans in the application.
@@ -39,5 +41,22 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    /**
+     * Configures Spring Security to allow public access to all URLs.
+     *
+     * @param http the HttpSecurity object
+     * @return a SecurityFilterChain for customizing security behavior
+     * @throws Exception if an error occurs during configuration
+     */
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .authorizeHttpRequests(authorize -> authorize
+                        .anyRequest().permitAll()
+                );
+
+        return http.build();
     }
 }
