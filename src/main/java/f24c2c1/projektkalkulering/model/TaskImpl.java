@@ -35,6 +35,7 @@ public class TaskImpl implements Task {
     private Date startDate;
     private Date endDate;
     private String status; // e.g., "Not Started", "In Progress", "Completed"
+    private long parentId;
     private Boolean isSubTask;
     private List<Task> subTasks;
 
@@ -131,6 +132,16 @@ public class TaskImpl implements Task {
     @Override
     public void setIsSubTask(Boolean isSubTask) {
         this.isSubTask = isSubTask;
+    }
+
+    @Override
+    public long getParentId() {
+        return parentId;
+    }
+
+    @Override
+    public void setParentId(long parentId) {
+        this.parentId = parentId;
     }
 
     @Override

@@ -39,6 +39,8 @@ public interface Task {
     void setStatus(String status);
     Boolean getIsSubTask();
     void setIsSubTask(Boolean isSubTask);
+    long getParentId();
+    void setParentId(long parentId);
     List<Task> getSubTasks();
     void setSubTasks(List<Task> subTasks);
 }
