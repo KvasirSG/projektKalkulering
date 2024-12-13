@@ -5,8 +5,9 @@
  *              JdbcTemplate. Provides CRUD operations and SQL mappings for Task.
  *
  * Author:      Sebastian (Duofour)
+ * Contributor: Kenneth (KvasirSG)
  * Created:     2024-11-28
- * Updated:     2024-11-29
+ * Updated:     2024-12-13
  * Version:     1.0
  *
  * License:     MIT License
