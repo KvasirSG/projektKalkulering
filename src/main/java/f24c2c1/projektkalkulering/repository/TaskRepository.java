@@ -54,6 +54,7 @@ public class TaskRepository {
             task.setEndDate(rs.getDate("end_date"));
             task.setStatus(rs.getString("status"));
             task.setIsSubTask(rs.getBoolean("is_sub_task"));
+            task.setParentId(rs.getLong("project_id"));
             return task;
         }
     }
@@ -69,8 +70,8 @@ public class TaskRepository {
     }
 
     public int save(Task task) {
-        String sql = "INSERT INTO tasks (name, description, creation_date, estimate, start_date, end_date, status, is_sub_task) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO tasks (name, description, creation_date, estimate, start_date, end_date, status, is_sub_task, project_id) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         return jdbcTemplate.update(
                 sql,
                 task.getName(),
@@ -80,7 +81,8 @@ public class TaskRepository {
                 task.getStartDate(),
                 task.getEndDate(),
                 task.getStatus(),
-                task.getIsSubTask()
+                task.getIsSubTask(),
+                task.getParentId()
         );
     }
 
