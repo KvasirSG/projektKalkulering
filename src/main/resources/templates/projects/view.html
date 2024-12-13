@@ -1,46 +1,43 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Project Details</title>
-    <link rel="stylesheet" href="/css/styles.css">
-</head>
-<body>
-<div class="container">
-    <h1 th:text="'Project: ' + ${project.name}"></h1>
-    <p th:text="${project.description}"></p>
-    <p><strong>Creation Date:</strong> <span th:text="${project.creationDate}"></span></p>
-    <p><strong>Start Date:</strong> <span th:text="${project.startDate}"></span></p>
-    <p><strong>End Date:</strong> <span th:text="${project.endDate}"></span></p>
 
-    <h2>Subprojects</h2>
-    <ul>
-        <li th:each="subproject : ${subprojects}">
-            <span th:text="${subproject.name}"></span> -
-            <span th:text="${subproject.description}"></span>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project View</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+
+<body>
+<div class="project-container">
+    <h1 class="project-title">Project: [[${project.name}]]</h1>
+
+    <ul class="main-project-list">
+        <li class="main-project-item">
+            <div class="project-header">Main Project: [[${project.name}]]</div>
+
+            <!-- Main Project Tasks -->
+            <ul class="task-list">
+                <li class="task-item" th:each="task : ${tasks}">
+                    Task: [[${task.name}]]
+                </li>
+                <!-- Subprojects -->
+                <li class="subproject-item" th:each="subproject : ${subprojects}">
+                    <div class="subproject-header">
+                        Subproject: [[${subproject.name}]]
+                    </div>
+
+                    <!-- Subproject Tasks -->
+                    <ul class="task-list">
+                        <li class="task-item" th:each="task : ${tasksByProject.get(subproject)}">
+                            Task: [[${task.name}]]
+                        </li>
+                    </ul>
+                </li>
+            </ul>
         </li>
     </ul>
-
-    <h2>Tasks</h2>
-    <table class="task-table">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Estimate (hrs)</th>
-            <th>Status</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="task : ${tasks}">
-            <td th:text="${task.name}"></td>
-            <td th:text="${task.description}"></td>
-            <td th:text="${task.estimate}"></td>
-            <td th:text="${task.status}"></td>
-        </tr>
-        </tbody>
-    </table>
-
-    <a href="/projects" class="btn">Back to Projects</a>
 </div>
 </body>
+
 </html>

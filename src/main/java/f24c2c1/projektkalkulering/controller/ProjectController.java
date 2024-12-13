@@ -8,7 +8,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/projects")
@@ -103,12 +106,22 @@ public class ProjectController {
     @GetMapping("/{id}")
     public String viewProject(@PathVariable long id, Model model) {
         Project project = projectService.getProjectById(id);
-        List<Project> subprojects = project.getSubProjects();
         List<Task> tasks = project.getTasks();
+        List<Project> subprojects = project.getSubProjects();
+
+        // Prepare a hierarchical structure
+        Map<Project, List<Task>> tasksBySubProject = new LinkedHashMap<>();
+
+        for (Project subproject : subprojects) {
+            tasksBySubProject.put(subproject, subproject.getTasks()); // Subproject tasks
+        }
 
         model.addAttribute("project", project);
-        model.addAttribute("subprojects", subprojects);
         model.addAttribute("tasks", tasks);
+        model.addAttribute("subprojects", subprojects);
+        model.addAttribute("tasksByProject", tasksBySubProject);
         return "projects/view";
     }
+
+
 }
