@@ -5,8 +5,9 @@
  *              JdbcTemplate. Provides CRUD operations and SQL mappings for Task.
  *
  * Author:      Sebastian (Duofour)
+ * Contributor: Kenneth (KvasirSG)
  * Created:     2024-11-28
- * Updated:     2024-11-29
+ * Updated:     2024-12-15
  * Version:     1.0
  *
  * License:     MIT License
@@ -29,7 +30,9 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class TaskRepository {
@@ -54,6 +57,7 @@ public class TaskRepository {
             task.setEndDate(rs.getDate("end_date"));
             task.setStatus(rs.getString("status"));
             task.setIsSubTask(rs.getBoolean("is_sub_task"));
+            task.setCompetency(rs.getString("competency"));
             return task;
         }
     }
@@ -69,8 +73,8 @@ public class TaskRepository {
     }
 
     public int save(Task task) {
-        String sql = "INSERT INTO tasks (name, description, creation_date, estimate, start_date, end_date, status, is_sub_task) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO tasks (name, description, creation_date, estimate, start_date, end_date, status, is_sub_task, competency) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?,?)";
         return jdbcTemplate.update(
                 sql,
                 task.getName(),
@@ -80,7 +84,8 @@ public class TaskRepository {
                 task.getStartDate(),
                 task.getEndDate(),
                 task.getStatus(),
-                task.getIsSubTask()
+                task.getIsSubTask(),
+                task.getCompetency()
         );
     }
 
@@ -105,4 +110,22 @@ public class TaskRepository {
         String sql = "DELETE FROM tasks WHERE id = ?";
         return jdbcTemplate.update(sql, id);
     }
+
+    public int calculateTotalEstimateForProject(long projectId) {
+        String sql = "SELECT SUM(estimate) FROM tasks WHERE project_id = ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, projectId);
+    }
+
+    public Map<String, Integer> getTotalHoursByCompetency(long projectId) {
+        String sql = "SELECT competency, SUM(estimate) AS total_hours FROM tasks WHERE project_id = ? GROUP BY competency";
+        return jdbcTemplate.query(sql, rs -> {
+            Map<String, Integer> result = new HashMap<>();
+            while (rs.next()) {
+                result.put(rs.getString("competency"), rs.getInt("total_hours"));
+            }
+            return result;
+        }, projectId);
+    }
+
+
 }
