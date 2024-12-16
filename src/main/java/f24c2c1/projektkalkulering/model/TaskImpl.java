@@ -6,9 +6,8 @@
  *              metadata, status, time estimates, and subtask relationships.
  *
  * Author:      Sebastian (Duofour)
- * Contributor: Kenneth (KvasirSG)
  * Created:     2024-11-28
- * Updated:     2024-12-15
+ * Updated:     2024-11-29
  * Version:     1.0
  *
  * License:     MIT License
@@ -38,8 +37,6 @@ public class TaskImpl implements Task {
     private String status; // e.g., "Not Started", "In Progress", "Completed"
     private Boolean isSubTask;
     private List<Task> subTasks;
-    private String competency; // e.g., "Developer", "Tester"
-
 
     public TaskImpl() {
         this.subTasks = new ArrayList<>();
@@ -144,15 +141,5 @@ public class TaskImpl implements Task {
     @Override
     public void setSubTasks(List<Task> subTasks) {
         this.subTasks = subTasks;
-    }
-
-    @Override
-    public String getCompetency() {
-        return competency;
-    }
-
-    @Override
-    public void setCompetency(String competency) {
-        this.competency = competency;
     }
 }

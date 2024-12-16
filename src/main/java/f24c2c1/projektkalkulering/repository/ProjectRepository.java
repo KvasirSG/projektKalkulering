@@ -7,7 +7,7 @@
  *
  * Author:      Kenneth (KvasirSG)
  * Created:     2024-11-28
- * Updated:     2024-12-15
+ * Updated:     2024-12-06
  * Version:     1.0
  *
  * License:     MIT License
@@ -31,10 +31,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public class ProjectRepository {
@@ -236,17 +233,6 @@ public class ProjectRepository {
     private Client createClientInstance() {
         return new ClientImpl();
     }
-
-    public Map<String, Date> getProjectDates(long projectId) {
-        String sql = "SELECT start_date, end_date FROM projects WHERE id = ?";
-        return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> {
-            Map<String, Date> dates = new HashMap<>();
-            dates.put("startDate", rs.getDate("start_date"));
-            dates.put("endDate", rs.getDate("end_date"));
-            return dates;
-        }, projectId);
-    }
-
 }
 
 

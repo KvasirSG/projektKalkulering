@@ -46,7 +46,6 @@ CREATE TABLE tasks (
     status VARCHAR(50),
     is_subtask BOOLEAN DEFAULT FALSE,
     project_id BIGINT,
-    competency VARCHAR(255),
     FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
 );
 
