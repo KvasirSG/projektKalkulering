@@ -69,4 +69,11 @@ public class TaskController {
         }
         return "redirect:/tasks";
     }
+    // Assign Competence to a task
+    @PostMapping("/{taskId}/competences/{competenceId}")
+    public String assignCompetenceToTask(@PathVariable long taskId, @PathVariable long competenceId) {
+        taskService.assignCompetenceToTask(taskId, competenceId);
+        return "redirect:/tasks/" + taskId;
+    }
+
 }
