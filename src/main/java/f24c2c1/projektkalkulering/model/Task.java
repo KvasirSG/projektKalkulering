@@ -41,4 +41,7 @@ public interface Task {
     void setIsSubTask(Boolean isSubTask);
     List<Task> getSubTasks();
     void setSubTasks(List<Task> subTasks);
+    String getCompetency();
+    void setCompetency(String competency);
+
 }
