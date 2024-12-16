@@ -2,6 +2,7 @@ package f24c2c1.projektkalkulering.controller;
 
 import f24c2c1.projektkalkulering.model.Task;
 import f24c2c1.projektkalkulering.model.TaskImpl;
+import f24c2c1.projektkalkulering.service.CompetenceService;
 import f24c2c1.projektkalkulering.service.TaskService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,9 +16,12 @@ import java.util.List;
 public class TaskController {
 
     private final TaskService taskService;
+    private final CompetenceService competenceService; // Inject CompetenceService
 
-    public TaskController(TaskService taskService) {
+    // Constructor Injection for both services
+    public TaskController(TaskService taskService, CompetenceService competenceService) {
         this.taskService = taskService;
+        this.competenceService = competenceService;
     }
 
     // List all tasks
@@ -30,11 +34,11 @@ public class TaskController {
 
     // Show the form for creating a new task
     @GetMapping("/new/{procID}")
-    public String showNewTaskForm(@PathVariable long procID,Model model) {
+    public String showNewTaskForm(@PathVariable long procID, Model model) {
         Task task = new TaskImpl();
         task.setParentId(procID);
 
-        model.addAttribute("task",task);
+        model.addAttribute("task", task);
         return "tasks/form";
     }
 
@@ -69,11 +73,11 @@ public class TaskController {
         }
         return "redirect:/tasks";
     }
+
     // Assign Competence to a task
     @PostMapping("/{taskId}/competences/{competenceId}")
     public String assignCompetenceToTask(@PathVariable long taskId, @PathVariable long competenceId) {
-        taskService.assignCompetenceToTask(taskId, competenceId);
+        competenceService.assignCompetenceToTask(taskId, competenceId); // Call instance method
         return "redirect:/tasks/" + taskId;
     }
-
 }
