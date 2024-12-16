@@ -21,8 +21,11 @@
  */
 package f24c2c1.projektkalkulering.service;
 
+import f24c2c1.projektkalkulering.model.Competence;
+import f24c2c1.projektkalkulering.model.CompetenceImpl;
 import f24c2c1.projektkalkulering.model.Task;
 import f24c2c1.projektkalkulering.repository.TaskRepository;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -55,4 +58,5 @@ public class TaskService {
     public void deleteTask(long id) {
         taskRepository.deleteById(id);
     }
+
 }

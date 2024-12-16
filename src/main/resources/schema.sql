@@ -57,3 +57,32 @@ CREATE TABLE subprojects (
     FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE,
     FOREIGN KEY (subproject_id) REFERENCES projects(id) ON DELETE CASCADE
 );
+-- Create Competences table
+CREATE TABLE competences (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+);
+
+-- Create Tools table
+CREATE TABLE tools (
+   id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+);
+
+-- Create Task_Competences relation table
+CREATE TABLE task_competences (
+    task_id BIGINT NOT NULL,
+    competence_id BIGINT NOT NULL,
+    PRIMARY KEY (task_id, competence_id),
+    FOREIGN KEY (task_id) REFERENCES tasks(id) ON DELETE CASCADE,
+    FOREIGN KEY (competence_id) REFERENCES competences(id) ON DELETE CASCADE
+);
+
+-- Create Task_Tools relation table
+CREATE TABLE task_tools (
+    task_id BIGINT NOT NULL,
+    tool_id BIGINT NOT NULL,
+    PRIMARY KEY (task_id, tool_id),
+    FOREIGN KEY (task_id) REFERENCES tasks(id) ON DELETE CASCADE,
+    FOREIGN KEY (tool_id) REFERENCES tools(id) ON DELETE CASCADE
+);

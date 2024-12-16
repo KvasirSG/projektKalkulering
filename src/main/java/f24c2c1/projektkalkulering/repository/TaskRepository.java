@@ -22,6 +22,8 @@
  */
 package f24c2c1.projektkalkulering.repository;
 
+import f24c2c1.projektkalkulering.model.Competence;
+import f24c2c1.projektkalkulering.model.CompetenceImpl;
 import f24c2c1.projektkalkulering.model.Task;
 import f24c2c1.projektkalkulering.model.TaskImpl;
 import org.springframework.jdbc.core.JdbcTemplate;
