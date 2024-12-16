@@ -1,3 +1,26 @@
+/*
+ * ===================================================================================
+ * File:        TimeCalculationService.java
+ * Description: Service layer responsible for calculating time estimates and completion
+ *              dates for projects and tasks. Includes logic for aggregating time
+ *              across tasks and sub-projects and determining realistic completion
+ *              dates based on work schedules.
+ *
+ * Author:      Kenneth (KvasirSG)
+ * Created:     2024-12-14
+ * Updated:     2024-12-16
+ * Version:     1.0
+ *
+ * License:     MIT License
+ *
+ * Notes:       - This service integrates with ProjectService to fetch project data.
+ *              - Assumes a standard workday of 8 hours and excludes weekends
+ *                (Saturday, Sunday) from workday calculations.
+ *              - Can be extended to include support for holidays or custom work
+ *                schedules in future iterations.
+ * ===================================================================================
+ */
+
 package f24c2c1.projektkalkulering.service;
 
 import f24c2c1.projektkalkulering.model.Project;
