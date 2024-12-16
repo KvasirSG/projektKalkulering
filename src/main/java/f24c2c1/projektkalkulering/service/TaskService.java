@@ -59,21 +59,4 @@ public class TaskService {
         taskRepository.deleteById(id);
     }
 
-    private final RowMapper<Competence> COMPETENCE_ROW_MAPPER = (rs, rowNum) -> {
-        Competence competence = new CompetenceImpl();
-        competence.setId(rs.getLong("id"));
-        competence.setName(rs.getString("name"));
-        return competence;
-    };
-
-    public void assignCompetenceToTask(long taskId, long competenceId) {
-        String sql = "INSERT INTO task_competences (task_id, competence_id) VALUES (?, ?)";
-        jdbcTemplate.update(sql, taskId, competenceId);
-    }
-
-    public List<Competence> getTaskCompetences(long taskId) {
-        String sql = "SELECT c.* FROM competences c JOIN task_competences tc ON c.id = tc.competence_id WHERE tc.task_id = ?";
-        return jdbcTemplate.query(sql, COMPETENCE_ROW_MAPPER, taskId);
-    }
-
 }
