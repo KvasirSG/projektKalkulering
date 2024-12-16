@@ -7,7 +7,7 @@
  *
  * Author:      Kenneth (KvasirSG)
  * Created:     2024-11-28
- * Updated:     2024-12-06
+ * Updated:     2024-12-13
  * Version:     1.0
  *
  * License:     MIT License
@@ -213,7 +213,7 @@ public class ProjectRepository {
 
         private List<Project> fetchSubprojects(long projectId) {
             String sql = "SELECT subproject_id FROM subprojects WHERE project_id = ?";
-            return jdbcTemplate.query(sql, (rs, rowNum) -> findById(rs.getLong("subproject_id")));
+            return jdbcTemplate.query(sql, (rs, rowNum) -> findById(rs.getLong("subproject_id")),projectId);
         }
     }
 
