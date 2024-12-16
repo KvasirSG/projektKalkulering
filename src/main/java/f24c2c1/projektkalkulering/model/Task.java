@@ -6,7 +6,7 @@
  *
  * Author:      Kenneth (KvasirSG)
  * Created:     2024-11-28
- * Updated:     2024-11-28
+ * Updated:     2024-12-13
  * Version:     1.0
  *
  * License:     MIT License
@@ -39,6 +39,8 @@ public interface Task {
     void setStatus(String status);
     Boolean getIsSubTask();
     void setIsSubTask(Boolean isSubTask);
+    long getParentId();
+    void setParentId(long parentId);
     List<Task> getSubTasks();
     void setSubTasks(List<Task> subTasks);
 }
