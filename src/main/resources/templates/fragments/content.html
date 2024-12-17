@@ -10,7 +10,6 @@
 
 <body>
 <!-- Project Details Fragment -->
-<!-- Project Details Fragment -->
 <div th:fragment="project-details" class="project-container">
     <h1 class="project-title">Project: [[${project.name}]]</h1>
 
@@ -25,7 +24,7 @@
         <!-- Subprojects -->
         <li th:each="subproject : ${subprojects}" style="display: block">
             <div class="subproject-line">
-                <span class="task-name">Subproject: [[${subproject.name}]]</span>
+                <span class="task-name"><a th:href="@{/projects/{id}(id=${subproject.id})}">Subproject: [[${subproject.name}]]</a></span>
                 <span class="task-description">[[${subproject.description}]]</span>
             </div>
 

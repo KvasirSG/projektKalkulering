@@ -4,6 +4,8 @@ import f24c2c1.projektkalkulering.model.Project;
 import f24c2c1.projektkalkulering.model.ProjectImpl;
 import f24c2c1.projektkalkulering.model.Task;
 import f24c2c1.projektkalkulering.service.ProjectService;
+import f24c2c1.projektkalkulering.service.TaskService;
+import f24c2c1.projektkalkulering.service.TimeCalculationService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,9 +19,11 @@ import java.util.Map;
 public class ProjectController {
 
     private final ProjectService projectService;
+    private final TimeCalculationService timeCalculationService;
 
-    public ProjectController(ProjectService projectService) {
+    public ProjectController(ProjectService projectService, TimeCalculationService timeCalculationService) {
         this.projectService = projectService;
+        this.timeCalculationService = timeCalculationService;
     }
 
     /**
@@ -105,12 +109,16 @@ public class ProjectController {
         return "redirect:/projects";
     }
 
+    double estimate(Project project) {
+        return timeCalculationService.calculateEstimateForProjectTasks(project);
+    }
     /**
      * Displays the detailed view of a project, including its subprojects and tasks.
      */
     @GetMapping("/{id}")
     public String viewProject(@PathVariable long id, Model model) {
         Project project = projectService.getProjectById(id);
+        double totalEstimate = timeCalculationService.calculateTotalEstimateForProjectAndTasks(project);
         List<Task> tasks = project.getTasks();
         List<Project> subprojects = project.getSubProjects();
 
@@ -121,11 +129,17 @@ public class ProjectController {
             tasksBySubProject.put(subproject, subproject.getTasks()); // Subproject tasks
         }
 
+        Map<Project, Double> subprojectEstimate = new LinkedHashMap<>();
+        for (Project subproject : subprojects) {
+            subprojectEstimate.put(subproject, estimate(subproject));
+        }
+        model.addAttribute("totalEstimate", totalEstimate);
         model.addAttribute("endpoint", "project-details");
         model.addAttribute("project", project);
         model.addAttribute("tasks", tasks);
         model.addAttribute("subprojects", subprojects);
         model.addAttribute("tasksByProject", tasksBySubProject);
+        model.addAttribute("subprojectEstimate", subprojectEstimate);
         return "layout";
     }
 
