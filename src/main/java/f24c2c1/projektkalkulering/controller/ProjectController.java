@@ -32,7 +32,7 @@ public class ProjectController {
     public String listProjects(Model model) {
         List<Project> projects = projectService.getAllProjects();
         model.addAttribute("projects", projects);
-        return "projects/list";
+        return "layout";
     }
 
     /**
