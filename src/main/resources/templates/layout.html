@@ -31,6 +31,10 @@
             <div th:if="${endpoint == 'project-details'}">
                 <div th:replace="~{fragments/content :: project-details}"></div>
             </div>
+            <div th:if="${endpoint == 'tools'}">
+                <div th:replace="~{fragments/tool-form :: tool-form}"></div>
+            </div>
+
         </div>
 
         <!-- Right Sidebar -->

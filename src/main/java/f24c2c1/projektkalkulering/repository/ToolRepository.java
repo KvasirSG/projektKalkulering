@@ -21,7 +21,7 @@ public class ToolRepository {
         Tool tool = new ToolImpl();
         tool.setId(rs.getLong("id"));
         tool.setName(rs.getString("name"));
-        tool.setValue(rs.getDouble("value"));
+        tool.setValue(rs.getDouble("tool_value"));
         return tool;
     };
 
@@ -31,7 +31,7 @@ public class ToolRepository {
     }
 
     public void save(Tool tool) {
-        String sql = "INSERT INTO tools (name, value) VALUES (?, ?)";
+        String sql = "INSERT INTO tools (name, tool_value) VALUES (?, ?)";
         jdbcTemplate.update(sql, tool.getName(), tool.getValue());
     }
 
