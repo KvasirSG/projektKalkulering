@@ -24,7 +24,9 @@
 
     <!-- Center Content -->
     <div class="content">
-        <!-- Empty main content area -->
+        <!-- Dynamic Content based on fragments -->
+        <div th:replace="~{fragments/content :: projects}" th:if="${endpoint == 'projects'}"></div>
+<!--        <div th:replace="~{fragments/content :: project-details}" th:if="${endpoint == 'project-details'}"></div>-->
     </div>
 
     <!-- Right Sidebar -->

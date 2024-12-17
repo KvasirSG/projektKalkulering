@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Projects Fragment</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<!-- Projects Fragment -->
+<div th:fragment="projects" class="container">
+    <h1>Projects</h1>
+    <div class="project-cards">
+        <a th:each="project : ${projects}" th:href="@{/projects/{id}(id=${project.id})}" class="project-card">
+            <h2 th:text="${project.name}" class="project-card-title"></h2>
+            <p th:text="${project.description}" class="project-card-description"></p>
+        </a>
+    </div>
+</div>
+</body>
+</html>

@@ -31,6 +31,12 @@ public class ProjectController {
     @GetMapping
     public String listProjects(Model model) {
         List<Project> projects = projectService.getAllProjects();
+        for (Project project : projects) {
+            if(project.isSubProject()){
+                projects.remove(project);
+            }
+        }
+        model.addAttribute("endpoint", "projects");
         model.addAttribute("projects", projects);
         return "layout";
     }
