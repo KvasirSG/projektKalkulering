@@ -30,11 +30,11 @@ INSERT INTO competences (name) VALUES
                                    ('Project Management');
 
 -- Insert data into Tools table
-INSERT INTO tools (name) VALUES
-                             ('Figma'),
-                             ('Google Analytics'),
-                             ('Node.js'),
-                             ('JIRA');
+INSERT INTO tools (name, tool_value ) VALUES
+                             ('Figma', 120.25),
+                             ('Google Analytics',120.20),
+                             ('Node.js',120.20),
+                             ('JIRA',120.25);
 
 -- Insert data into Task_Competences table
 INSERT INTO task_competences (task_id, competence_id) VALUES
