@@ -121,11 +121,12 @@ public class ProjectController {
             tasksBySubProject.put(subproject, subproject.getTasks()); // Subproject tasks
         }
 
+        model.addAttribute("endpoint", "project-details");
         model.addAttribute("project", project);
         model.addAttribute("tasks", tasks);
         model.addAttribute("subprojects", subprojects);
         model.addAttribute("tasksByProject", tasksBySubProject);
-        return "projects/view";
+        return "layout";
     }
 
 

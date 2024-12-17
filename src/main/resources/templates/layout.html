@@ -8,35 +8,39 @@
 </head>
 <body>
 <div class="layout-container">
-<!-- Main Container -->
-<div class="main-container">
-    <!-- Left Sidebar -->
-    <div class="sidebar">
-        <!-- Logo -->
-        <div class="logo">
-            <span>Logo</span>
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Left Sidebar -->
+        <div class="sidebar">
+            <!-- Logo -->
+            <div class="logo">
+                <span>Logo</span>
+            </div>
+            <!-- Button -->
+            <div th:if="${endpoint == 'projects'}">
+                <div th:replace="~{fragments/button :: projects}" class="button"></div>
+            </div>
         </div>
-        <!-- Button -->
-        <div class="button">
-            <button>button</button>
+
+        <!-- Center Content -->
+        <div class="content">
+            <!-- Dynamic Content based on fragments -->
+            <div th:if="${endpoint == 'projects'}">
+                <div th:replace="~{fragments/content :: projects}"></div>
+            </div>
+            <div th:if="${endpoint == 'project-details'}">
+                <div th:replace="~{fragments/content :: project-details}"></div>
+            </div>
+        </div>
+
+        <!-- Right Sidebar -->
+        <div class="right-sidebar">
+            <!-- Top Box -->
+            <div class="top-box"></div>
+            <!-- Bottom Box -->
+            <div class="bottom-box"></div>
         </div>
     </div>
-
-    <!-- Center Content -->
-    <div class="content">
-        <!-- Dynamic Content based on fragments -->
-        <div th:replace="~{fragments/content :: projects}" th:if="${endpoint == 'projects'}"></div>
-<!--        <div th:replace="~{fragments/content :: project-details}" th:if="${endpoint == 'project-details'}"></div>-->
-    </div>
-
-    <!-- Right Sidebar -->
-    <div class="right-sidebar">
-        <!-- Top Box -->
-        <div class="top-box"></div>
-        <!-- Bottom Box -->
-        <div class="bottom-box"></div>
-    </div>
-</div>
 </div>
 </body>
 </html>

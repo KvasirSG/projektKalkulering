@@ -1,10 +1,47 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <title>Projects Fragment</title>
-    <link rel="stylesheet" href="/css/styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Details Fragment</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
+
 <body>
+<!-- Project Details Fragment -->
+<!-- Project Details Fragment -->
+<div th:fragment="project-details" class="project-container">
+    <h1 class="project-title">Project: [[${project.name}]]</h1>
+
+    <ul class="tasks-container">
+        <!-- Main Project Tasks -->
+        <li class="task-line" th:each="task : ${tasks}">
+            <span class="task-name">Task: [[${task.name}]]</span>
+            <span class="task-description">[[${task.description}]]</span>
+            <span class="task-estimate">Estimate: [[${task.estimate}]]</span>
+        </li>
+
+        <!-- Subprojects -->
+        <li th:each="subproject : ${subprojects}" style="display: block">
+            <div class="subproject-line">
+                <span class="task-name">Subproject: [[${subproject.name}]]</span>
+                <span class="task-description">[[${subproject.description}]]</span>
+            </div>
+
+            <!-- Subproject Tasks -->
+            <ul class="tasks-container" style="padding-top: 0.5rem">
+                <li class="task-line" th:each="task : ${tasksByProject.get(subproject)}">
+                    <span class="task-name">Task: [[${task.name}]]</span>
+                    <span class="task-description">[[${task.description}]]</span>
+                    <span class="task-estimate">Estimate: [[${task.estimate}]]</span>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>
+
+
 <!-- Projects Fragment -->
 <div th:fragment="projects" class="container">
     <h1>Projects</h1>
@@ -16,4 +53,5 @@
     </div>
 </div>
 </body>
+
 </html>
