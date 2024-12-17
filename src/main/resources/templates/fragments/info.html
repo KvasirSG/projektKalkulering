@@ -2,30 +2,45 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Info Fragment</title>
-    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
 <!-- Projects Fragment -->
 <div th:fragment="project-details">
     <ul>
-        <li>Title: [[${project.name}]]</li>
-        <li>Description: [[${project.description}]] </li>
-        <li>Leader: [[${project.creator.name}]] </li>
-        <li>Start Date: [[${project.startDate}]]</li>
-        <li>End Date: [[${project.endDate}]]</li>
-        <li>Total Estimate: [[${totalEstimate}]]</li>
-        <li>Client Info:
-        <ul>
-            <li>
-                [[${project.client.name}]]
-            </li>
-            <li>[[${project.client.contactName}]]</li>
-            <li>
-                [[${project.client.email}]]
-            </li>
-        </ul>
+        <!-- Project Title -->
+        <li>Title: [[${project != null and project.name != null ? project.name : 'N/A'}]]</li>
+
+        <!-- Project Description -->
+        <li>Description: [[${project != null and project.description != null ? project.description : 'N/A'}]]</li>
+
+        <!-- Project Leader -->
+        <li>
+            Leader: [[${project != null and project.creator != null and project.creator.name != null ? project.creator.name : 'N/A'}]]
         </li>
 
+        <!-- Project Start Date -->
+        <li>
+            Start Date: [[${project != null and project.startDate != null ? project.startDate : 'N/A'}]]
+        </li>
+
+        <!-- Project End Date -->
+        <li>
+            End Date: [[${project != null and project.endDate != null ? project.endDate : 'N/A'}]]
+        </li>
+
+        <!-- Total Estimate -->
+        <li>Total Estimate: [[${totalEstimate != null ? totalEstimate : 'N/A'}]]</li>
+
+        <!-- Client Information -->
+        <li>Client Info:
+            <ul th:if="${project != null and project.client != null}">
+                <li>[[${project.client.name != null ? project.client.name : 'N/A'}]]</li>
+                <li>[[${project.client.contactName != null ? project.client.contactName : 'N/A'}]]</li>
+                <li>[[${project.client.email != null ? project.client.email : 'N/A'}]]</li>
+            </ul>
+            <p th:if="${project == null or project.client == null}">No client information available.</p>
+        </li>
     </ul>
 </div>
 </body>

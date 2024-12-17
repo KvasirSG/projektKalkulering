@@ -20,6 +20,9 @@
             <div th:if="${endpoint == 'projects'}">
                 <div th:replace="~{fragments/button :: projects}" class="button"></div>
             </div>
+            <div th:if="${endpoint == 'project-details'}">
+                <div th:replace="~{fragments/button :: project-details}" class="button"></div>
+            </div>
         </div>
 
         <!-- Center Content -->
@@ -30,6 +33,12 @@
             </div>
             <div th:if="${endpoint == 'project-details'}">
                 <div th:replace="~{fragments/content :: project-details}"></div>
+            </div>
+            <div th:if="${endpoint == 'create-project-form'}">
+                <div th:replace="~{fragments/create-forms :: create-project-form}"></div>
+            </div>
+            <div th:if="${endpoint == 'create-subproject-form'}">
+                <div th:replace="~{fragments/create-subforms :: create-project-form}"></div>
             </div>
         </div>
 

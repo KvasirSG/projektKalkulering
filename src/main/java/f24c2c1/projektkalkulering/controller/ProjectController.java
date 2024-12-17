@@ -10,9 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDate;
+import java.util.*;
 
 @Controller
 @RequestMapping("/projects")
@@ -34,10 +33,11 @@ public class ProjectController {
      */
     @GetMapping
     public String listProjects(Model model) {
-        List<Project> projects = projectService.getAllProjects();
-        for (Project project : projects) {
-            if(project.isSubProject()){
-                projects.remove(project);
+        List<Project> Allprojects = projectService.getAllProjects();
+        List<Project> projects = new ArrayList<>();
+        for (Project project : Allprojects) {
+            if(!project.isSubProject()){
+                projects.add(project);
             }
         }
         model.addAttribute("endpoint", "projects");
@@ -53,8 +53,23 @@ public class ProjectController {
      */
     @GetMapping("/new")
     public String showCreateForm(Model model) {
+        model.addAttribute("endpoint", "create-project-form");
         model.addAttribute("project", new ProjectImpl());
-        return "projects/create";
+        return "layout";
+    }
+
+    /**
+     * Displays the form for creating a new project.
+     *
+     * @param model the model to hold attributes
+     * @return the project creation view
+     */
+    @GetMapping("/{id}/new")
+    public String showSubCreateForm(@PathVariable long id,Model model) {
+        model.addAttribute("id", id);
+        model.addAttribute("endpoint", "create-subproject-form");
+        model.addAttribute("project", new ProjectImpl());
+        return "layout";
     }
 
     /**
@@ -64,8 +79,30 @@ public class ProjectController {
      * @return redirect to the project list
      */
     @PostMapping
-    public String createProject(@ModelAttribute Project project) {
+    public String createProject(@ModelAttribute ProjectImpl project) {
+        LocalDate localDate = LocalDate.now();
+        project.setCreationDate(localDate);
         projectService.saveProject(project);
+        return "redirect:/projects";
+    }
+
+    /**
+     * Handles the submission of a new project.
+     *
+     * @param project the project to save
+     * @return redirect to the project list
+     */
+    @PostMapping("/{id}/new")
+    public String createSubProject(@PathVariable long id,@ModelAttribute ProjectImpl project) {
+        Project project1 = projectService.getProjectById(id);
+        LocalDate localDate = LocalDate.now();
+        project.setCreationDate(localDate);
+        project.setSubProject(true);
+        long subId = projectService.saveProject(project);
+        project.setId(subId);
+        List<Project> subprojects = new ArrayList<>();
+        subprojects.add(project);
+        projectService.saveSubproject(project1,subprojects);
         return "redirect:/projects";
     }
 

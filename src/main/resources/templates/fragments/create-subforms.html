@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create SubProject Form</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<!-- Create Project Form Fragment -->
+<div th:fragment="create-project-form" class="container">
+    <h1>Create New Project</h1>
+    <form th:action="@{/projects/{id}/new(id=${id})}" th:object="${project}" method="post">
+    <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" th:field="*{name}" required class="form-input">
+        </div>
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea id="description" th:field="*{description}" class="form-input"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="startDate">Start Date:</label>
+            <input type="date" id="startDate" th:field="*{startDate}" class="form-input">
+        </div>
+        <div class="form-group">
+            <label for="endDate">End Date:</label>
+            <input type="date" id="endDate" th:field="*{endDate}" class="form-input">
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-save">Save</button>
+            <a th:href="@{/projects/${project.id}}" class="btn btn-cancel">Cancel</a>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

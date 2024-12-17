@@ -14,5 +14,20 @@
     </ul>
 
 </div>
+<!-- Projects Fragment -->
+<div th:fragment="project-details">
+    <ul>
+        <li style="display: flex">
+            <button class="create-project" th:onclick="|window.location.href='@{/tasks/new}'|">Create New Task</button>
+        </li>
+        <li style="display: flex">
+            <button class="create-project"
+                    th:onclick="|window.location.href='@{/projects/{id}/new(id=${project.id})}'|">
+                Create New Subproject
+            </button>
+        </li>
+    </ul>
+
+</div>
 </body>
 </html>
