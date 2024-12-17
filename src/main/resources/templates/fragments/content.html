@@ -26,6 +26,7 @@
             <div class="subproject-line">
                 <span class="task-name"><a th:href="@{/projects/{id}(id=${subproject.id})}">Subproject: [[${subproject.name}]]</a></span>
                 <span class="task-description">[[${subproject.description}]]</span>
+                <span class="task-estimate">Estimate: [[${subprojectEstimate.get(subproject)}]]</span>
             </div>
 
             <!-- Subproject Tasks -->

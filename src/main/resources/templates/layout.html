@@ -36,7 +36,11 @@
         <!-- Right Sidebar -->
         <div class="right-sidebar">
             <!-- Top Box -->
-            <div class="top-box"></div>
+            <div class="top-box">
+                <div th:if="${endpoint == 'project-details'}">
+                    <div th:replace="~{fragments/info :: project-details}"></div>
+                </div>
+            </div>
             <!-- Bottom Box -->
             <div class="bottom-box"></div>
         </div>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Info Fragment</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<!-- Projects Fragment -->
+<div th:fragment="project-details">
+    <ul>
+        <li>Title: [[${project.name}]]</li>
+        <li>Description: [[${project.description}]] </li>
+        <li>Leader: [[${project.creator.name}]] </li>
+        <li>Start Date: [[${project.startDate}]]</li>
+        <li>End Date: [[${project.endDate}]]</li>
+        <li>Total Estimate: [[${totalEstimate}]]</li>
+        <li>Client Info:
+        <ul>
+            <li>
+                [[${project.client.name}]]
+            </li>
+            <li>[[${project.client.contactName}]]</li>
+            <li>
+                [[${project.client.email}]]
+            </li>
+        </ul>
+        </li>
+
+    </ul>
+</div>
+</body>
+</html>
