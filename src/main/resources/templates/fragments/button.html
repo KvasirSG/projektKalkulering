@@ -9,25 +9,43 @@
 <div th:fragment="projects">
     <ul>
         <li style="display: flex">
-            <button class="create-project" th:onclick="|window.location.href='@{/projects/new}'|">Create New Project</button>
+            <button class="create-button" th:onclick="|window.location.href='@{/projects/new}'|">Create New Project</button>
+        </li>
+        <li style="display: flex">
+            <button class="create-button" th:onclick="|window.location.href='@{/tools}'|">Tools</button>
+        </li>
+        <li style="display: flex">
+            <button class="create-button" th:onclick="|window.location.href='@{/projects}'|">Competences</button>
         </li>
     </ul>
-
 </div>
 <!-- Projects Fragment -->
 <div th:fragment="project-details">
     <ul>
         <li style="display: flex">
-            <button class="create-project" th:onclick="|window.location.href='@{/tasks/new}'|">Create New Task</button>
+            <button class="create-button" th:onclick="|window.location.href='@{/tasks/new}'|">Create New Task</button>
         </li>
         <li style="display: flex">
-            <button class="create-project"
+            <button class="create-button"
                     th:onclick="|window.location.href='@{/projects/{id}/new(id=${project.id})}'|">
                 Create New Subproject
             </button>
         </li>
+        <li style="display: flex">
+            <button class="create-button-blue"
+                    th:onclick="|window.location.href='@{/projects}'|">
+                Back
+            </button>
+        </li>
     </ul>
-
+</div>
+<!-- Tools Fragment -->
+<div th:fragment="tools">
+    <ul>
+        <li style="display: flex">
+            <button class="create-button-blue" th:onclick="|window.location.href='@{/projects}'|">Back</button>
+        </li>
+    </ul>
 </div>
 </body>
 </html>
