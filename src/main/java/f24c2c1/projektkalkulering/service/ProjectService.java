@@ -23,8 +23,8 @@ public class ProjectService {
      * @param project the project to save
      */
     @Transactional
-    public void saveProject(Project project) {
-        projectRepository.save(project);
+    public long saveProject(Project project) {
+        return projectRepository.save(project);
     }
 
     /**
@@ -46,6 +46,10 @@ public class ProjectService {
     public Project getProjectById(long id) {
         return Optional.ofNullable(projectRepository.findById(id))
                 .orElseThrow(() -> new RuntimeException("Project with ID " + id + " not found"));
+    }
+
+    public void saveSubproject(Project project, List<Project> subprojects) {
+        projectRepository.saveSubprojects(project.getId(),subprojects);
     }
 
     /**

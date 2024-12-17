@@ -15,27 +15,40 @@
 
     <ul class="tasks-container">
         <!-- Main Project Tasks -->
-        <li class="task-line" th:each="task : ${tasks}">
+        <li class="task-line" th:if="${tasks != null and not #lists.isEmpty(tasks)}" th:each="task : ${tasks}">
             <span class="task-name">Task: [[${task.name}]]</span>
             <span class="task-description">[[${task.description}]]</span>
             <span class="task-estimate">Estimate: [[${task.estimate}]]</span>
         </li>
+        <!-- No Tasks Message -->
+        <li th:if="${tasks == null or #lists.isEmpty(tasks)}" class="task-line">
+            <span>No tasks available.</span>
+        </li>
 
         <!-- Subprojects -->
-        <li th:each="subproject : ${subprojects}" style="display: block">
+        <li th:if="${subprojects != null and not #lists.isEmpty(subprojects)}" th:each="subproject : ${subprojects}" style="display: block">
             <div class="subproject-line">
                 <span class="task-name"><a th:href="@{/projects/{id}(id=${subproject.id})}">Subproject: [[${subproject.name}]]</a></span>
                 <span class="task-description">[[${subproject.description}]]</span>
+                <span class="task-estimate">Estimate: [[${subprojectEstimate.get(subproject)}]]</span>
             </div>
 
             <!-- Subproject Tasks -->
-            <ul class="tasks-container" style="padding-top: 0.5rem">
+            <ul class="tasks-container" th:if="${tasksByProject != null and tasksByProject.get(subproject) != null and not #lists.isEmpty(tasksByProject.get(subproject))}" style="padding-top: 0.5rem">
                 <li class="task-line" th:each="task : ${tasksByProject.get(subproject)}">
                     <span class="task-name">Task: [[${task.name}]]</span>
                     <span class="task-description">[[${task.description}]]</span>
                     <span class="task-estimate">Estimate: [[${task.estimate}]]</span>
                 </li>
             </ul>
+            <!-- No Subproject Tasks Message -->
+            <p th:if="${tasksByProject == null or tasksByProject.get(subproject) == null or #lists.isEmpty(tasksByProject.get(subproject))}">
+                No tasks available for this subproject.
+            </p>
+        </li>
+        <!-- No Subprojects Message -->
+        <li th:if="${subprojects == null or #lists.isEmpty(subprojects)}" class="task-line">
+            <span>No subprojects available.</span>
         </li>
     </ul>
 </div>
