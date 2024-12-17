@@ -13,7 +13,7 @@ INSERT INTO users (email, name, password, role) VALUES
 -- Insert data into Projects table
 INSERT INTO projects (name, description, creation_date, start_date, end_date, creator_id, client_id, is_subproject) VALUES
                                                                                                                         ('Website Redesign', 'Redesign the client website with a modern layout.', '2024-06-01', '2024-06-10', '2024-09-10', 2, 1, FALSE),
-                                                                                                                        ('Marketing Campaign', 'Digital marketing campaign for new product.', '2024-05-15', '2024-06-01', '2024-07-01', 2, 2, FALSE),
+                                                                                                                        ('Marketing Campaign', 'Digital marketing campaign for new product.', '2024-05-15', '2024-06-01', '2024-07-01', 2, 2, TRUE),
                                                                                                                         ('Mobile App Development', 'Develop a cross-platform mobile app.', '2024-06-05', '2024-07-01', '2024-12-01', 3, 3, FALSE);
 
 -- Insert data into Tasks table
@@ -50,5 +50,4 @@ INSERT INTO task_tools (task_id, tool_id) VALUES
 
 -- Insert data into Subprojects table
 INSERT INTO subprojects (project_id, subproject_id) VALUES
-                                                        (1, 2), -- Website Redesign has a subproject Marketing Campaign
-                                                        (3, 1); -- Mobile App Development depends on Website Redesign
+                                                        (1, 2); -- Website Redesign has a subproject Marketing Campaign
