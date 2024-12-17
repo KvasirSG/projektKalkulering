@@ -22,6 +22,7 @@
  */
 package f24c2c1.projektkalkulering.model;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 /**
@@ -34,12 +35,12 @@ public interface Project {
     void setName(String name);
     String getDescription();
     void setDescription(String description);
-    Date getCreationDate();
-    void setCreationDate(Date creationDate);
-    Date getStartDate();
-    void setStartDate(Date startDate);
-    Date getEndDate();
-    void setEndDate(Date endDate);
+    LocalDate getCreationDate();
+    void setCreationDate(LocalDate creationDate);
+    LocalDate getStartDate();
+    void setStartDate(LocalDate startDate);
+    LocalDate getEndDate();
+    void setEndDate(LocalDate endDate);
     User getCreator();
     void setCreator(User creator);
     Client getClient();

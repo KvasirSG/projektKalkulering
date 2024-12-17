@@ -29,6 +29,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
+
+import java.sql.PreparedStatement;
+import java.sql.Statement;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -42,21 +48,37 @@ public class ProjectRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public void save(Project project) {
-        String sql = "INSERT INTO projects (name, description, creation_date, start_date, end_date, creator_id, client_id, is_subproject) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        jdbcTemplate.update(sql,
-                project.getName(),
-                project.getDescription(),
-                project.getCreationDate(),
-                project.getStartDate(),
-                project.getEndDate(),
-                project.getCreator() != null ? project.getCreator().getId() : null,
-                project.getClient() != null ? project.getClient().getId() : null,
-                project.isSubProject());
+    public Long save(Project project) {
+        String sql = "INSERT INTO projects (name, description, creation_date, start_date, end_date, creator_id, client_id, is_subproject) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
-        // Save tasks and subprojects
-        saveTasks(project.getId(), project.getTasks());
-        saveSubprojects(project.getId(), project.getSubProjects());
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, project.getName());
+            ps.setString(2, project.getDescription());
+            ps.setDate(3, java.sql.Date.valueOf(project.getCreationDate()));
+            ps.setDate(4, java.sql.Date.valueOf(project.getStartDate()));
+            ps.setDate(5, java.sql.Date.valueOf(project.getEndDate()));
+            ps.setObject(6, project.getCreator() != null ? project.getCreator().getId() : null);
+            ps.setObject(7, project.getClient() != null ? project.getClient().getId() : null);
+            ps.setBoolean(8, project.isSubProject());
+            return ps;
+        }, keyHolder);
+
+        // Retrieve the generated project ID
+        if (keyHolder.getKey() != null) {
+            Long generatedId = keyHolder.getKey().longValue();
+
+            // Save tasks and subprojects using the generated ID
+            saveTasks(generatedId, project.getTasks());
+            saveSubprojects(generatedId, project.getSubProjects());
+
+            return generatedId; // Return the ID
+        } else {
+            throw new RuntimeException("Failed to retrieve generated ID for project insert.");
+        }
     }
 
     public Project findById(long id) {
@@ -114,7 +136,7 @@ public class ProjectRepository {
         }
     }
 
-    private void saveSubprojects(long projectId, List<Project> subprojects) {
+    public void saveSubprojects(long projectId, List<Project> subprojects) {
         if (subprojects == null || subprojects.isEmpty()) return;
 
         String sql = "INSERT INTO subprojects (project_id, subproject_id) VALUES (?, ?)";
@@ -143,9 +165,9 @@ public class ProjectRepository {
             project.setId(rs.getLong("id"));
             project.setName(rs.getString("name"));
             project.setDescription(rs.getString("description"));
-            project.setCreationDate(rs.getDate("creation_date"));
-            project.setStartDate(rs.getDate("start_date"));
-            project.setEndDate(rs.getDate("end_date"));
+            project.setCreationDate(rs.getDate("creation_date").toLocalDate());
+            project.setStartDate(rs.getDate("start_date").toLocalDate());
+            project.setEndDate(rs.getDate("end_date").toLocalDate());
             project.setSubProject(rs.getBoolean("is_subproject"));
 
             // Fetch related entities

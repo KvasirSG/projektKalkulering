@@ -19,6 +19,7 @@
  */
 package f24c2c1.projektkalkulering.model;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -26,9 +27,9 @@ public class ProjectImpl implements Project {
     private long id;
     private String name;
     private String description;
-    private Date creationDate;
-    private Date startDate;
-    private Date endDate;
+    private LocalDate creationDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private User creator;
     private Client client;
     private boolean isSubproject;
@@ -66,32 +67,32 @@ public class ProjectImpl implements Project {
     }
 
     @Override
-    public Date getCreationDate() {
+    public LocalDate getCreationDate() {
         return creationDate;
     }
 
     @Override
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(LocalDate creationDate) {
         this.creationDate = creationDate;
     }
 
     @Override
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
     @Override
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
     @Override
-    public Date getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
     @Override
-    public void setEndDate(Date endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 

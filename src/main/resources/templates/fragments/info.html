@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Info Fragment</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<!-- Projects Fragment -->
+<div th:fragment="project-details">
+    <ul>
+        <!-- Project Title -->
+        <li>Title: [[${project != null and project.name != null ? project.name : 'N/A'}]]</li>
+
+        <!-- Project Description -->
+        <li>Description: [[${project != null and project.description != null ? project.description : 'N/A'}]]</li>
+
+        <!-- Project Leader -->
+        <li>
+            Leader: [[${project != null and project.creator != null and project.creator.name != null ? project.creator.name : 'N/A'}]]
+        </li>
+
+        <!-- Project Start Date -->
+        <li>
+            Start Date: [[${project != null and project.startDate != null ? project.startDate : 'N/A'}]]
+        </li>
+
+        <!-- Project End Date -->
+        <li>
+            End Date: [[${project != null and project.endDate != null ? project.endDate : 'N/A'}]]
+        </li>
+
+        <!-- Total Estimate -->
+        <li>Total Estimate: [[${totalEstimate != null ? totalEstimate : 'N/A'}]]</li>
+
+        <!-- Client Information -->
+        <li>Client Info:
+            <ul th:if="${project != null and project.client != null}">
+                <li>[[${project.client.name != null ? project.client.name : 'N/A'}]]</li>
+                <li>[[${project.client.contactName != null ? project.client.contactName : 'N/A'}]]</li>
+                <li>[[${project.client.email != null ? project.client.email : 'N/A'}]]</li>
+            </ul>
+            <p th:if="${project == null or project.client == null}">No client information available.</p>
+        </li>
+    </ul>
+</div>
+</body>
+</html>

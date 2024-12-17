@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thymeleaf Layout</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="layout-container">
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Left Sidebar -->
+        <div class="sidebar">
+            <!-- Logo -->
+            <div class="logo">
+                <span>Logo</span>
+            </div>
+            <!-- Button -->
+            <div th:if="${endpoint == 'projects'}">
+                <div th:replace="~{fragments/button :: projects}" class="button"></div>
+            </div>
+            <div th:if="${endpoint == 'project-details'}">
+                <div th:replace="~{fragments/button :: project-details}" class="button"></div>
+            </div>
+            <div th:if="${endpoint == 'tools'}">
+                <div th:replace="~{fragments/button :: tools}" class="button"></div>
+            </div>
+        </div>
+
+        <!-- Center Content -->
+        <div class="content">
+            <!-- Dynamic Content based on fragments -->
+            <div th:if="${endpoint == 'projects'}">
+                <div th:replace="~{fragments/content :: projects}"></div>
+            </div>
+            <div th:if="${endpoint == 'project-details'}">
+                <div th:replace="~{fragments/content :: project-details}"></div>
+            </div>
+            <div th:if="${endpoint == 'tools'}">
+                <div th:replace="~{fragments/tool-form :: tool-form}"></div>
+            </div>
+            <div th:if="${endpoint == 'competences'}">
+                <div th:replace="~{fragments/competence-form :: competence-form}"></div>
+            </div>
+
+            <div th:if="${endpoint == 'create-project-form'}">
+                <div th:replace="~{fragments/create-forms :: create-project-form}"></div>
+            </div>
+            <div th:if="${endpoint == 'create-subproject-form'}">
+                <div th:replace="~{fragments/create-subforms :: create-project-form}"></div>
+            </div>
+        </div>
+
+        <!-- Right Sidebar -->
+        <div class="right-sidebar">
+            <!-- Top Box -->
+            <div class="top-box">
+                <div th:if="${endpoint == 'project-details'}">
+                    <div th:replace="~{fragments/info :: project-details}"></div>
+                </div>
+            </div>
+            <!-- Bottom Box -->
+            <div class="bottom-box"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

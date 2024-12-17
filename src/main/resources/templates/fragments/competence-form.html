@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Competence Form</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<!-- Competence Form Fragment -->
+<div th:fragment="competence-form" class="form-container">
+    <h2>Add a New Competence</h2>
+    <form th:action="@{/competences/save}" method="post">
+        <!-- Name Input -->
+        <label for="name">Competence Name:</label>
+        <input type="text" id="name" name="name" placeholder="Enter Competence Name" required />
+
+        <!-- Submit Button -->
+        <button type="submit" class="save-button">Save Competence</button>
+    </form>
+
+    <h3>Available Competences in house</h3>
+    <ul>
+        <li th:each="competence : ${competences}">
+            <span th:text="|Name: ${competence.name}|"></span>
+        </li>
+    </ul>
+</div>
+</body>
+</html>

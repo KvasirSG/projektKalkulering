@@ -1,23 +1,53 @@
--- Insert test clients
+-- Insert data into Clients table
 INSERT INTO clients (name, contact_name, address, city, zip, phone, email) VALUES
-    ('Acme Corporation', 'John Doe', '123 Main St', 'Metropolis', '12345', '555-1234', 'contact@acme.com'),
-    ('Tech Solutions', 'Jane Smith', '456 Elm St', 'Gotham', '54321', '555-5678', 'info@techsolutions.com');
+                                                                               ('Tech Solutions', 'John Doe', '123 Main St', 'New York', '10001', '555-1234', 'johndoe@techsolutions.com'),
+                                                                               ('Creative Studio', 'Jane Smith', '456 Elm St', 'Los Angeles', '90002', '555-5678', 'janesmith@creativestudio.com'),
+                                                                               ('Business Corp', 'Mike Johnson', '789 Pine St', 'Chicago', '60603', '555-9012', 'mikejohnson@businesscorp.com');
 
--- Insert test users
+-- Insert data into Users table
 INSERT INTO users (email, name, password, role) VALUES
-    ('admin@example.com', 'Admin User', 'adminpassword', 'ADMIN'),
-    ('user@example.com', 'Regular User', 'userpassword', 'USER');
+                                                    ('admin@company.com', 'Admin User', 'hashedpassword1', 'Admin'),
+                                                    ('project.manager@company.com', 'Project Manager', 'hashedpassword2', 'Manager'),
+                                                    ('developer@company.com', 'Developer User', 'hashedpassword3', 'Developer');
 
--- Insert test projects
+-- Insert data into Projects table
 INSERT INTO projects (name, description, creation_date, start_date, end_date, creator_id, client_id, is_subproject) VALUES
-    ('Project A', 'Description of Project A', CURRENT_DATE, CURRENT_DATE, NULL, 1, 1, FALSE),
-    ('Project B', 'Description of Project B', CURRENT_DATE, CURRENT_DATE, NULL, 2, 2, TRUE);
+                                                                                                                        ('Website Redesign', 'Redesign the client website with a modern layout.', '2024-06-01', '2024-06-10', '2024-09-10', 2, 1, FALSE),
+                                                                                                                        ('Marketing Campaign', 'Digital marketing campaign for new product.', '2024-05-15', '2024-06-01', '2024-07-01', 2, 2, TRUE),
+                                                                                                                        ('Mobile App Development', 'Develop a cross-platform mobile app.', '2024-06-05', '2024-07-01', '2024-12-01', 3, 3, FALSE);
 
--- Insert test tasks
+-- Insert data into Tasks table
 INSERT INTO tasks (name, description, creation_date, estimate, start_date, end_date, status, is_subtask, project_id) VALUES
-    ('Task 1', 'Description of Task 1', CURRENT_DATE, 5, CURRENT_DATE, NULL, 'IN_PROGRESS', FALSE, 1),
-    ('Task 2', 'Description of Task 2', CURRENT_DATE, 3, CURRENT_DATE, NULL, 'COMPLETED', TRUE, 1);
+                                                                                                                         ('Design Wireframes', 'Create initial wireframe designs for the project.', '2024-06-01', 10, '2024-06-10', '2024-06-20', 'In Progress', FALSE, 1),
+                                                                                                                         ('SEO Optimization', 'Optimize content for search engines.', '2024-05-16', 5, '2024-06-01', '2024-06-10', 'Not Started', FALSE, 2),
+                                                                                                                         ('App Backend Development', 'Set up backend APIs and database for the app.', '2024-06-06', 15, '2024-07-01', '2024-08-01', 'Planned', FALSE, 3);
 
--- Insert test subprojects
+-- Insert data into Competences table
+INSERT INTO competences (name) VALUES
+                                   ('UI/UX Design'),
+                                   ('SEO Specialist'),
+                                   ('Backend Development'),
+                                   ('Project Management');
+
+-- Insert data into Tools table
+INSERT INTO tools (name, tool_value ) VALUES
+                             ('Figma', 120.25),
+                             ('Google Analytics',120.20),
+                             ('Node.js',120.20),
+                             ('JIRA',120.25);
+
+-- Insert data into Task_Competences table
+INSERT INTO task_competences (task_id, competence_id) VALUES
+                                                          (1, 1), -- Design Wireframes -> UI/UX Design
+                                                          (2, 2), -- SEO Optimization -> SEO Specialist
+                                                          (3, 3); -- App Backend Development -> Backend Development
+
+-- Insert data into Task_Tools table
+INSERT INTO task_tools (task_id, tool_id) VALUES
+                                              (1, 1), -- Design Wireframes -> Figma
+                                              (2, 2), -- SEO Optimization -> Google Analytics
+                                              (3, 3); -- App Backend Development -> Node.js
+
+-- Insert data into Subprojects table
 INSERT INTO subprojects (project_id, subproject_id) VALUES
-    (1, 2);
+                                                        (1, 2); -- Website Redesign has a subproject Marketing Campaign
