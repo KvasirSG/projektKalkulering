@@ -37,6 +37,9 @@
             <div th:if="${endpoint == 'tools'}">
                 <div th:replace="~{fragments/tool-form :: tool-form}"></div>
             </div>
+            <div th:if="${endpoint == 'competences'}">
+                <div th:replace="~{fragments/competence-form :: competence-form}"></div>
+            </div>
 
             <div th:if="${endpoint == 'create-project-form'}">
                 <div th:replace="~{fragments/create-forms :: create-project-form}"></div>
