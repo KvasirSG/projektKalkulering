@@ -63,11 +63,13 @@ CREATE TABLE competences (
     name VARCHAR(255) NOT NULL
 );
 
--- Create Tools table
-CREATE TABLE tools (
-   id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL
-);
+CREATE TABLE IF NOT EXISTS tools (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    tool_value DECIMAL(10, 2) NOT NULL
+    );
+
+
 
 -- Create Task_Competences relation table
 CREATE TABLE task_competences (

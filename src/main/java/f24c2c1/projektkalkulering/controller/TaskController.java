@@ -4,6 +4,7 @@ import f24c2c1.projektkalkulering.model.Task;
 import f24c2c1.projektkalkulering.model.TaskImpl;
 import f24c2c1.projektkalkulering.service.CompetenceService;
 import f24c2c1.projektkalkulering.service.TaskService;
+import f24c2c1.projektkalkulering.service.ToolService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,12 +17,14 @@ import java.util.List;
 public class TaskController {
 
     private final TaskService taskService;
-    private final CompetenceService competenceService; // Inject CompetenceService
+    private final CompetenceService competenceService;
+    private final ToolService toolService;
 
-    // Constructor Injection for both services
-    public TaskController(TaskService taskService, CompetenceService competenceService) {
+    // Constructor
+    public TaskController(TaskService taskService, CompetenceService competenceService, ToolService toolService)  {
         this.taskService = taskService;
         this.competenceService = competenceService;
+        this.toolService = toolService;
     }
 
     // List all tasks
@@ -79,5 +82,18 @@ public class TaskController {
     public String assignCompetenceToTask(@PathVariable long taskId, @PathVariable long competenceId) {
         competenceService.assignCompetenceToTask(taskId, competenceId); // Call instance method
         return "redirect:/tasks/" + taskId;
+    }
+
+    @PostMapping("/{taskId}/tools/{toolId}")
+    public String assignToolToTask(@PathVariable long taskId, @PathVariable long toolId) {
+        toolService.assignToolToTask(taskId, toolId);
+        return "redirect:/tasks/" + taskId;
+    }
+
+    @GetMapping("/{taskId}/tools/cost")
+    @ResponseBody
+    public String getTotalToolCostForTask(@PathVariable long taskId) {
+        double totalCost = toolService.calculateTotalCostForTask(taskId);
+        return "Total Tool Cost: " + totalCost;
     }
 }
