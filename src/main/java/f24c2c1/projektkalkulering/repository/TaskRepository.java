@@ -94,9 +94,15 @@ public class TaskRepository {
             return ps;
         }, keyHolder);
 
-        long generatedId = keyHolder.getKey().longValue();
-        task.setId(generatedId);
-        return generatedId;
+        // Retrieve the generated project ID
+        if (keyHolder.getKey() != null) {
+            Long generatedId = keyHolder.getKey().longValue();
+            task.setId(generatedId);
+            return generatedId;
+        }else {
+            throw new RuntimeException("Failed to retrieve generated ID for project insert.");
+        }
+
     }
 
 
