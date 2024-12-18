@@ -1,8 +1,8 @@
 package f24c2c1.projektkalkulering.controller;
 
-import f24c2c1.projektkalkulering.model.Task;
-import f24c2c1.projektkalkulering.model.TaskImpl;
+import f24c2c1.projektkalkulering.model.*;
 import f24c2c1.projektkalkulering.service.CompetenceService;
+import f24c2c1.projektkalkulering.service.ProjectService;
 import f24c2c1.projektkalkulering.service.TaskService;
 import f24c2c1.projektkalkulering.service.ToolService;
 import org.springframework.stereotype.Controller;
@@ -10,7 +10,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDate;
 import java.util.List;
+
 
 @Controller
 @RequestMapping("/tasks")
@@ -19,12 +21,14 @@ public class TaskController {
     private final TaskService taskService;
     private final CompetenceService competenceService;
     private final ToolService toolService;
+    private final ProjectService projectService;
 
     // Constructor
-    public TaskController(TaskService taskService, CompetenceService competenceService, ToolService toolService)  {
+    public TaskController(TaskService taskService, CompetenceService competenceService, ToolService toolService, ProjectService projectService)  {
         this.taskService = taskService;
         this.competenceService = competenceService;
         this.toolService = toolService;
+        this.projectService = projectService;
     }
 
     // List all tasks
@@ -35,48 +39,153 @@ public class TaskController {
         return "tasks/list";
     }
 
-    // Show the form for creating a new task
-    @GetMapping("/new/{procID}")
-    public String showNewTaskForm(@PathVariable long procID, Model model) {
-        Task task = new TaskImpl();
-        task.setParentId(procID);
+    // Display the task creation form tied to a sub-project
+    @GetMapping("/new/{subProjectId}")
+    public String showTaskForm(@PathVariable Long subProjectId, Model model) {
+        TaskImpl task = new TaskImpl();
+        task.setParentId(subProjectId);
+        task.setStatus("NEW");
+        task.setIsSubTask(false);
+
+        // Fetch all available competences and tools
+        List<Competence> allCompetences = competenceService.getAllCompetences();
+        List<Tool> allTools = toolService.getAllTools();
 
         model.addAttribute("task", task);
-        return "tasks/form";
+        model.addAttribute("subProjectId", subProjectId);
+        model.addAttribute("allCompetences", allCompetences);
+        model.addAttribute("allTools", allTools);
+        model.addAttribute("endpoint", "create-task");
+
+        return "layout";
     }
 
-    // Save a new task or update an existing one
     @PostMapping("/save")
-    public String saveTask(@ModelAttribute Task task, RedirectAttributes redirectAttributes) {
-        taskService.createTask(task);
-        return "redirect:/tasks";
+    public String saveTask(
+            @ModelAttribute TaskImpl task,
+            @RequestParam(value = "competences", required = false) List<Long> selectedCompetenceIds,
+            @RequestParam(value = "tools", required = false) List<Long> selectedToolIds,
+            RedirectAttributes redirectAttributes) {
+        try {
+            LocalDate localDate = LocalDate.now();
+            task.setCreationDate(localDate);
+            // Create the task and get the task ID
+            taskService.createTask(task);
+
+            // Now assign selected competences and tools, if any were checked
+            if (selectedCompetenceIds != null) {
+                for (Long compId : selectedCompetenceIds) {
+                    competenceService.assignCompetenceToTask(task.getId(), compId);
+                }
+            }
+
+            if (selectedToolIds != null) {
+                for (Long toolId : selectedToolIds) {
+                    toolService.assignToolToTask(task.getId(), toolId);
+                }
+            }
+
+            redirectAttributes.addFlashAttribute("successMessage", "Task created successfully!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Failed to save task!");
+        }
+        return "redirect:/projects/" + task.getParentId();
     }
+
+    @GetMapping("/{id}")
+    public String viewTask(@PathVariable long id, Model model) {
+        Task task = taskService.getTaskById(id);
+
+        // Fetch competences and tools assigned to this task for display
+        List<Competence> assignedCompetences = competenceService.getCompetencesForTask(id);
+        List<Tool> assignedTools = toolService.getToolsForTask(id);
+
+        // Add attributes to the model
+        model.addAttribute("task", task);
+        model.addAttribute("assignedCompetences", assignedCompetences);
+        model.addAttribute("assignedTools", assignedTools);
+        model.addAttribute("endpoint", "task-details");
+
+        return "layout";
+    }
+
 
     // Show the form for editing an existing task
     @GetMapping("/edit/{id}")
-    public String showEditTaskForm(@PathVariable long id, Model model, RedirectAttributes redirectAttributes) {
-        try {
-            Task task = taskService.getTaskById(id);
-            model.addAttribute("task", task);
-            return "tasks/form";
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Task not found!");
-            return "redirect:/tasks";
-        }
+    public String showEditTaskForm(@PathVariable long id, Model model) {
+        Task task = taskService.getTaskById(id);
+        Project project = projectService.getProjectById(task.getParentId());
+
+        List<Competence> allCompetences = competenceService.getAllCompetences();
+        List<Tool> allTools = toolService.getAllTools();
+        List<Competence> assignedCompetences = competenceService.getCompetencesForTask(id);
+        List<Tool> assignedTools = toolService.getToolsForTask(id);
+
+        model.addAttribute("subProjectId", project.getId());
+        model.addAttribute("task", task);
+        model.addAttribute("allCompetences", allCompetences);
+        model.addAttribute("allTools", allTools);
+        model.addAttribute("assignedCompetences", assignedCompetences);
+        model.addAttribute("assignedTools", assignedTools);
+        model.addAttribute("endpoint", "edit-task");
+        model.addAttribute("editMode", true);
+
+        return "layout";
     }
+
+    @PostMapping("/update/{id}")
+    public String updateTask(
+            @PathVariable long id,
+            @ModelAttribute TaskImpl task,
+            @RequestParam(value = "competences", required = false) List<Long> selectedCompetenceIds,
+            @RequestParam(value = "tools", required = false) List<Long> selectedToolIds,
+            RedirectAttributes redirectAttributes
+    ) {
+        try {
+
+            task.setId(id);
+
+            taskService.updateTask(task);
+
+            competenceService.removeAllCompetencesFromTask(id);
+            toolService.removeAllToolsFromTask(id);
+
+
+            if (selectedCompetenceIds != null) {
+                for (Long compId : selectedCompetenceIds) {
+                    competenceService.assignCompetenceToTask(id, compId);
+                }
+            }
+
+            if (selectedToolIds != null) {
+                for (Long toolId : selectedToolIds) {
+                    toolService.assignToolToTask(id, toolId);
+                }
+            }
+
+            redirectAttributes.addFlashAttribute("successMessage", "Task updated successfully!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Failed to update task!");
+        }
+        return "redirect:/projects/" + task.getParentId();
+    }
+
 
     // Delete a task
-    @GetMapping("/delete/{id}")
+    @PostMapping("/delete/{id}")
     public String deleteTask(@PathVariable long id, RedirectAttributes redirectAttributes) {
         try {
+            Task task = taskService.getTaskById(id);
+            long parentId = task.getParentId();
             taskService.deleteTask(id);
             redirectAttributes.addFlashAttribute("successMessage", "Task deleted successfully!");
+
+            return "redirect:/projects/" + parentId; // directly concatenate
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Failed to delete task!");
+            return "redirect:/projects";
         }
-        return "redirect:/tasks";
     }
-
     // Assign Competence to a task
     @PostMapping("/{taskId}/competences/{competenceId}")
     public String assignCompetenceToTask(@PathVariable long taskId, @PathVariable long competenceId) {

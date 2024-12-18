@@ -28,10 +28,14 @@ import f24c2c1.projektkalkulering.model.Task;
 import f24c2c1.projektkalkulering.model.TaskImpl;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 @Repository
@@ -51,12 +55,12 @@ public class TaskRepository {
             task.setId(rs.getLong("id"));
             task.setName(rs.getString("name"));
             task.setDescription(rs.getString("description"));
-            task.setCreationDate(rs.getDate("creation_date"));
+            task.setCreationDate(rs.getDate("creation_date").toLocalDate());
             task.setEstimate(rs.getInt("estimate"));
-            task.setStartDate(rs.getDate("start_date"));
-            task.setEndDate(rs.getDate("end_date"));
+            task.setStartDate(rs.getDate("start_date").toLocalDate());
+            task.setEndDate(rs.getDate("end_date").toLocalDate());
             task.setStatus(rs.getString("status"));
-            task.setIsSubTask(rs.getBoolean("is_sub_task"));
+            task.setIsSubTask(rs.getBoolean("is_subtask"));
             task.setParentId(rs.getLong("project_id"));
             return task;
         }
@@ -72,25 +76,38 @@ public class TaskRepository {
         return jdbcTemplate.queryForObject(sql, new TaskRowMapper(), id);
     }
 
-    public int save(Task task) {
-        String sql = "INSERT INTO tasks (name, description, creation_date, estimate, start_date, end_date, status, is_sub_task, project_id) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        return jdbcTemplate.update(
-                sql,
-                task.getName(),
-                task.getDescription(),
-                task.getCreationDate(),
-                task.getEstimate(),
-                task.getStartDate(),
-                task.getEndDate(),
-                task.getStatus(),
-                task.getIsSubTask(),
-                task.getParentId()
-        );
+    public long save(Task task) {
+        String sql = "INSERT INTO tasks (name, description, creation_date, estimate, start_date, end_date, status, is_subtask, project_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, task.getName());
+            ps.setString(2, task.getDescription());
+            ps.setDate(3, java.sql.Date.valueOf(task.getCreationDate()));
+            ps.setInt(4, task.getEstimate());
+            ps.setDate(5, task.getStartDate() != null ? java.sql.Date.valueOf(task.getStartDate()) : null);
+            ps.setDate(6, task.getEndDate() != null ? java.sql.Date.valueOf(task.getEndDate()) : null);
+            ps.setString(7, task.getStatus());
+            ps.setBoolean(8, task.getIsSubTask());
+            ps.setLong(9, task.getParentId());
+            return ps;
+        }, keyHolder);
+
+        // Retrieve the generated project ID
+        if (keyHolder.getKey() != null) {
+            Long generatedId = keyHolder.getKey().longValue();
+            task.setId(generatedId);
+            return generatedId;
+        }else {
+            throw new RuntimeException("Failed to retrieve generated ID for project insert.");
+        }
+
     }
 
+
     public int update(Task task) {
-        String sql = "UPDATE tasks SET name = ?, description = ?, creation_date = ?, estimate = ?, start_date = ?, end_date = ?, status = ?, is_sub_task = ? " +
+        String sql = "UPDATE tasks SET name = ?, description = ?, creation_date = ?, estimate = ?, start_date = ?, end_date = ?, status = ?, is_subtask = ? " +
                 "WHERE id = ?";
         return jdbcTemplate.update(
                 sql,

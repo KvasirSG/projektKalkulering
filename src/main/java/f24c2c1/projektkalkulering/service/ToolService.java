@@ -40,4 +40,8 @@ public class ToolService {
                 .mapToDouble(Tool::getValue)
                 .sum();
     }
+
+    public void removeAllToolsFromTask(long taskId) {
+        toolRepository.removeAllToolsFromTask(taskId);
+    }
 }

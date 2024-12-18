@@ -23,7 +23,11 @@
 <div th:fragment="project-details">
     <ul>
         <li style="display: flex">
-            <button class="create-button" th:onclick="|window.location.href='@{/tasks/new}'|">Create New Task</button>
+            <!-- Create Task Button -->
+            <button class="create-project"
+                    th:onclick="|window.location.href='@{/tasks/new/{id}(id=${project.id})}'|">
+                Create Task
+            </button>
         </li>
         <li style="display: flex">
             <button class="create-button"
