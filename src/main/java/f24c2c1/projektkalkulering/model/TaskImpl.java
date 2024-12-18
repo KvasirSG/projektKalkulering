@@ -23,19 +23,23 @@
  */
 package f24c2c1.projektkalkulering.model;
 
+
 import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 public class TaskImpl implements Task {
     private long id;
     private String name;
     private String description;
-    private Date creationDate;
+
+
+    private LocalDate creationDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
+
     private int estimate; // in hours
-    private Date startDate;
-    private Date endDate;
-    private String status; // e.g., "Not Started", "In Progress", "Completed"
+    private String status;
     private long parentId;
     private Boolean isSubTask;
     private List<Task> subTasks;
@@ -44,7 +48,7 @@ public class TaskImpl implements Task {
         this.subTasks = new ArrayList<>();
     }
 
-    // Getters and Setters for the interface methods
+    // Getters and Setters
     @Override
     public long getId() {
         return id;
@@ -76,13 +80,33 @@ public class TaskImpl implements Task {
     }
 
     @Override
-    public Date getCreationDate() {
+    public LocalDate getCreationDate() {
         return creationDate;
     }
 
     @Override
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(LocalDate creationDate) {
         this.creationDate = creationDate;
+    }
+
+    @Override
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    @Override
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    @Override
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    @Override
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
     }
 
     @Override
@@ -93,26 +117,6 @@ public class TaskImpl implements Task {
     @Override
     public void setEstimate(int estimate) {
         this.estimate = estimate;
-    }
-
-    @Override
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    @Override
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
-    @Override
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    @Override
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
     }
 
     @Override

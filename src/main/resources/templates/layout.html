@@ -47,6 +47,15 @@
             <div th:if="${endpoint == 'create-subproject-form'}">
                 <div th:replace="~{fragments/create-subforms :: create-project-form}"></div>
             </div>
+            <div th:if="${endpoint == 'create-task'}">
+                <div th:replace="~{fragments/task-form :: task-form}"></div>
+            </div>
+            <div th:if="${endpoint == 'task-details'}">
+                <div th:replace="~{fragments/task-details :: task-details}"></div>
+            </div>
+            <div th:if="${endpoint == 'edit-task'}">
+                <div th:replace="~{fragments/task-form :: task-form}"></div>
+            </div>
         </div>
 
         <!-- Right Sidebar -->

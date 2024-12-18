@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Task Details</title>
+</head>
+<body>
+<div th:fragment="task-details">
+    <h1>Task Details: <span th:text="${task.name}"></span></h1>
+    <p>Description: <span th:text="${task.description}"></span></p>
+    <p>Estimate: <span th:text="${task.estimate}"></span> hours</p>
+    <p>Status: <span th:text="${task.status}"></span></p>
+    <p>Start Date: <span th:text="${task.startDate}"></span></p>
+    <p>End Date: <span th:text="${task.endDate}"></span></p>
+
+    <h3>Assigned Competences</h3>
+    <ul>
+        <li th:each="comp : ${assignedCompetences}" th:text="${comp.name}"></li>
+        <li th:if="${#lists.isEmpty(assignedCompetences)}">No competences assigned</li>
+    </ul>
+
+    <h3>Assigned Tools</h3>
+    <ul>
+        <li th:each="tool : ${assignedTools}" th:text="${tool.name}"></li>
+        <li th:if="${#lists.isEmpty(assignedTools)}">No tools assigned</li>
+    </ul>
+
+    <div class="form-actions">
+        <!-- Edit Button -->
+        <a th:href="@{/tasks/edit/{id}(id=${task.id})}" class="btn-save">Edit Task</a>
+
+        <!-- Close Button -->
+        <!--
+             For closing, redirect back to the project view using the task's parentId.
+             Since parentId is part of the task, we can direct the user back to project page:
+         -->
+        <a th:href="@{/projects/{id}(id=${task.parentId})}" class="btn-cancel">Close</a>
+    </div>
+</div>
+</body>
+</html>

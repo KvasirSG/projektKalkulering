@@ -223,10 +223,10 @@ public class ProjectRepository {
                 task.setId(rs.getLong("id"));
                 task.setName(rs.getString("name"));
                 task.setDescription(rs.getString("description"));
-                task.setCreationDate(rs.getDate("creation_date"));
+                task.setCreationDate(rs.getDate("creation_date").toLocalDate());
                 task.setEstimate(rs.getInt("estimate"));
-                task.setStartDate(rs.getDate("start_date"));
-                task.setEndDate(rs.getDate("end_date"));
+                task.setStartDate(rs.getDate("start_date").toLocalDate());
+                task.setEndDate(rs.getDate("end_date").toLocalDate());
                 task.setStatus(rs.getString("status"));
                 task.setIsSubTask(rs.getBoolean("is_subtask"));
                 return task;

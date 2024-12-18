@@ -16,7 +16,7 @@
     <ul class="tasks-container">
         <!-- Main Project Tasks -->
         <li class="task-line" th:if="${tasks != null and not #lists.isEmpty(tasks)}" th:each="task : ${tasks}">
-            <span class="task-name">Task: [[${task.name}]]</span>
+            <span class="task-name"><a th:href="@{/tasks/{id}(id=${task.id})}" th:text="${task.name}"></a></span>
             <span class="task-description">[[${task.description}]]</span>
             <span class="task-estimate">Estimate: [[${task.estimate}]]</span>
         </li>
@@ -36,7 +36,7 @@
             <!-- Subproject Tasks -->
             <ul class="tasks-container" th:if="${tasksByProject != null and tasksByProject.get(subproject) != null and not #lists.isEmpty(tasksByProject.get(subproject))}" style="padding-top: 0.5rem">
                 <li class="task-line" th:each="task : ${tasksByProject.get(subproject)}">
-                    <span class="task-name">Task: [[${task.name}]]</span>
+                    <span class="task-name"><a th:href="@{/tasks/{id}(id=${task.id})}" th:text="${task.name}"></a></span>
                     <span class="task-description">[[${task.description}]]</span>
                     <span class="task-estimate">Estimate: [[${task.estimate}]]</span>
                 </li>
