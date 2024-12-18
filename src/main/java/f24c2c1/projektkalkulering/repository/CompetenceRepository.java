@@ -56,4 +56,9 @@ public class CompetenceRepository {
                 "WHERE tc.task_id = ?";
         return jdbcTemplate.query(sql, COMPETENCE_ROW_MAPPER, taskId);
     }
+
+    public void removeAllCompetencesFromTask(long taskId) {
+        String sql = "DELETE FROM task_competences WHERE task_id = ?";
+        jdbcTemplate.update(sql, taskId);
+    }
 }

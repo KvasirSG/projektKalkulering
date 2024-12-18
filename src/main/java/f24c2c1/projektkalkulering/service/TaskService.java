@@ -46,10 +46,11 @@ public class TaskService {
     public Task getTaskById(long id) {
         return taskRepository.findById(id);
     }
-
     public void createTask(Task task) {
-        taskRepository.save(task);
+        long id = taskRepository.save(task);
+        task.setId(id);
     }
+
 
     public void updateTask(Task task) {
         taskRepository.update(task);

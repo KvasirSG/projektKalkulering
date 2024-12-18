@@ -17,7 +17,7 @@
  */
 package f24c2c1.projektkalkulering.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 public interface Task {
@@ -27,14 +27,14 @@ public interface Task {
     void setName(String name);
     String getDescription();
     void setDescription(String description);
-    Date getCreationDate();
-    void setCreationDate(Date creationDate);
+    LocalDate getCreationDate();
+    void setCreationDate(LocalDate creationDate);
     int getEstimate();
     void setEstimate(int estimate);
-    Date getStartDate();
-    void setStartDate(Date startDate);
-    Date getEndDate();
-    void setEndDate(Date endDate);
+    LocalDate getStartDate();
+    void setStartDate(LocalDate startDate);
+    LocalDate getEndDate();
+    void setEndDate(LocalDate endDate);
     String getStatus();
     void setStatus(String status);
     Boolean getIsSubTask();

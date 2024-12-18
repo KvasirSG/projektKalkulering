@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <title>Create or Edit Task</title>
+</head>
+
+<body>
+<div th:fragment="task-form" class="form-container">
+  <h2 th:text="${task.id != null && task.id > 0} ? 'Edit Task' : 'Create New Task'">Create New Task</h2>
+
+  <!-- Main form for create/update -->
+  <form th:action="${editMode} ? @{/tasks/update/{id}(id=${task.id})} : @{/tasks/save}"
+        th:object="${task}" method="post">
+
+    <input type="hidden" th:field="*{parentId}" />
+    <input type="hidden" th:field="*{isSubTask}" />
+    <input type="hidden" th:field="*{status}" />
+
+    <!-- Task Name -->
+    <div class="form-group">
+      <label for="name">Task Name:</label>
+      <input type="text" id="name" th:field="*{name}" required class="form-input" />
+    </div>
+
+    <!-- Task Description -->
+    <div class="form-group">
+      <label for="description">Description:</label>
+      <textarea id="description" th:field="*{description}" required class="form-input"></textarea>
+    </div>
+
+    <!-- Start Date -->
+    <div class="form-group">
+      <label for="startDate">Start Date:</label>
+      <input type="date" id="startDate" th:field="*{startDate}" required />
+    </div>
+
+    <!-- End Date -->
+    <div class="form-group">
+      <label for="endDate">End Date:</label>
+      <input type="date" id="endDate" th:field="*{endDate}" required />
+    </div>
+
+    <!-- Task Estimate -->
+    <div class="form-group">
+      <label for="estimate">Estimate (in hours):</label>
+      <input type="number" id="estimate" th:field="*{estimate}" required />
+    </div>
+
+    <!-- Competences Section -->
+    <div class="form-group">
+      <label>Assign Competences:</label>
+      <div th:each="competence : ${allCompetences}">
+        <input type="checkbox" th:name="competences"
+               th:value="${competence.id}"
+               th:checked="${assignedCompetences != null and #lists.contains(assignedCompetences, competence)}" />
+        <span th:text="${competence.name}"></span><br/>
+      </div>
+    </div>
+
+    <!-- Tools Section -->
+    <div class="form-group">
+      <label>Assign Tools:</label>
+      <div th:each="tool : ${allTools}">
+        <input type="checkbox" th:name="tools"
+               th:value="${tool.id}"
+               th:checked="${assignedTools != null and #lists.contains(assignedTools, tool)}" />
+        <span th:text="${tool.name}"></span><br/>
+      </div>
+    </div>
+
+    <!-- Action Buttons for Create/Update -->
+    <div class="form-actions">
+      <button type="submit" class="btn-save"
+              th:text="${editMode} ? 'Update Task' : 'Create Task'"></button>
+      <a th:href="@{/projects/{id}(id=${subProjectId})}" class="btn-cancel">Cancel</a>
+    </div>
+  </form> <!-- Close the main form here -->
+
+  <!-- Delete form (only if editMode) -->
+  <div th:if="${editMode}" style="margin-top:1rem;">
+    <form th:action="@{/tasks/delete/{id}(id=${task.id})}" method="post">
+      <button type="submit" class="btn-delete">Delete Task</button>
+    </form>
+  </div>
+
+</div> <!-- Close the .form-container div -->
+</body>
+
+</html>
