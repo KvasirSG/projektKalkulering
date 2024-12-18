@@ -128,7 +128,7 @@ public class ProjectController {
      * @return redirect to the project list
      */
     @PostMapping("/{id}")
-    public String updateProject(@PathVariable long id, @ModelAttribute Project project) {
+    public String updateProject(@PathVariable long id, @ModelAttribute ProjectImpl project) {
         project.setId(id); // Ensure the ID is set correctly
         projectService.updateProject(project);
         return "redirect:/projects";
