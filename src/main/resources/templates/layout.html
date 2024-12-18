@@ -23,6 +23,9 @@
             <div th:if="${endpoint == 'project-details'}">
                 <div th:replace="~{fragments/button :: project-details}" class="button"></div>
             </div>
+            <div th:if="${endpoint == 'tools'}">
+                <div th:replace="~{fragments/button :: tools}" class="button"></div>
+            </div>
         </div>
 
         <!-- Center Content -->
