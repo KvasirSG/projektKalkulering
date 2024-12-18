@@ -116,11 +116,8 @@ public class TaskController {
         Task task = taskService.getTaskById(id);
         Project project = projectService.getProjectById(task.getParentId());
 
-        // Fetch all competences and tools
         List<Competence> allCompetences = competenceService.getAllCompetences();
         List<Tool> allTools = toolService.getAllTools();
-
-        // Fetch the competences and tools already assigned to this task
         List<Competence> assignedCompetences = competenceService.getCompetencesForTask(id);
         List<Tool> assignedTools = toolService.getToolsForTask(id);
 
@@ -130,25 +127,65 @@ public class TaskController {
         model.addAttribute("allTools", allTools);
         model.addAttribute("assignedCompetences", assignedCompetences);
         model.addAttribute("assignedTools", assignedTools);
-
-        // endpoint for editing if needed
         model.addAttribute("endpoint", "edit-task");
+        model.addAttribute("editMode", true);
 
         return "layout";
     }
 
-    // Delete a task
-    @GetMapping("/delete/{id}")
-    public String deleteTask(@PathVariable long id, RedirectAttributes redirectAttributes) {
+    @PostMapping("/update/{id}")
+    public String updateTask(
+            @PathVariable long id,
+            @ModelAttribute TaskImpl task,
+            @RequestParam(value = "competences", required = false) List<Long> selectedCompetenceIds,
+            @RequestParam(value = "tools", required = false) List<Long> selectedToolIds,
+            RedirectAttributes redirectAttributes
+    ) {
         try {
-            taskService.deleteTask(id);
-            redirectAttributes.addFlashAttribute("successMessage", "Task deleted successfully!");
+
+            task.setId(id);
+
+            taskService.updateTask(task);
+
+            competenceService.removeAllCompetencesFromTask(id);
+            toolService.removeAllToolsFromTask(id);
+
+
+            if (selectedCompetenceIds != null) {
+                for (Long compId : selectedCompetenceIds) {
+                    competenceService.assignCompetenceToTask(id, compId);
+                }
+            }
+
+            if (selectedToolIds != null) {
+                for (Long toolId : selectedToolIds) {
+                    toolService.assignToolToTask(id, toolId);
+                }
+            }
+
+            redirectAttributes.addFlashAttribute("successMessage", "Task updated successfully!");
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Failed to delete task!");
+            redirectAttributes.addFlashAttribute("errorMessage", "Failed to update task!");
         }
-        return "redirect:/tasks";
+        return "redirect:/projects/" + task.getParentId();
     }
 
+
+    // Delete a task
+    @PostMapping("/delete/{id}")
+    public String deleteTask(@PathVariable long id, RedirectAttributes redirectAttributes) {
+        try {
+            Task task = taskService.getTaskById(id);
+            long parentId = task.getParentId();
+            taskService.deleteTask(id);
+            redirectAttributes.addFlashAttribute("successMessage", "Task deleted successfully!");
+
+            return "redirect:/projects/" + parentId; // directly concatenate
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Failed to delete task!");
+            return "redirect:/projects";
+        }
+    }
     // Assign Competence to a task
     @PostMapping("/{taskId}/competences/{competenceId}")
     public String assignCompetenceToTask(@PathVariable long taskId, @PathVariable long competenceId) {

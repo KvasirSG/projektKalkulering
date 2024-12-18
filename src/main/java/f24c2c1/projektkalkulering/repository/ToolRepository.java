@@ -49,4 +49,7 @@ public class ToolRepository {
         String sql = "SELECT t.* FROM tools t JOIN task_tools tt ON t.id = tt.tool_id WHERE tt.task_id = ?";
         return jdbcTemplate.query(sql, TOOL_ROW_MAPPER, taskId);
     }
+    public void removeAllToolsFromTask(long taskId) {
+        String sql = "DELETE FROM task_tools WHERE task_id = ?";
+    }
 }

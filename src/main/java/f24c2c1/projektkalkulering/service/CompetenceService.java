@@ -35,6 +35,10 @@ public class CompetenceService {
         return competenceRepository.getCompetencesForTask(taskId);
     }
 
+    public void removeAllCompetencesFromTask(long taskId) {
+        competenceRepository.removeAllCompetencesFromTask(taskId);
+    }
+
     // Delete a competence
     public void deleteCompetence(long id) {
         competenceRepository.deleteById(id);
