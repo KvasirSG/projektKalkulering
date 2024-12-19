@@ -1,4 +1,4 @@
-
+Disclaimer: As this is a public repository we want to inform you that this is an academy project for learning purposes and not to be taken as a real life project.
 # projectCalculations Tool
 
 Its an application for project calculation where you can create projects, subprojects and tasks as well as allocate resources and calculate estimates. 
