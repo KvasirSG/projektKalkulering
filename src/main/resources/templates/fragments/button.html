@@ -15,7 +15,7 @@
             <button class="create-button" th:onclick="|window.location.href='@{/tools}'|">Tools</button>
         </li>
         <li style="display: flex">
-            <button class="create-button" th:onclick="|window.location.href='@{/projects}'|">Competences</button>
+            <button class="create-button" th:onclick="|window.location.href='@{/competences}'|">Competences</button>
         </li>
     </ul>
 </div>
@@ -45,6 +45,13 @@
 </div>
 <!-- Tools Fragment -->
 <div th:fragment="tools">
+    <ul>
+        <li style="display: flex">
+            <button class="create-button-blue" th:onclick="|window.location.href='@{/projects}'|">Back</button>
+        </li>
+    </ul>
+</div>
+<div th:fragment="competences">
     <ul>
         <li style="display: flex">
             <button class="create-button-blue" th:onclick="|window.location.href='@{/projects}'|">Back</button>

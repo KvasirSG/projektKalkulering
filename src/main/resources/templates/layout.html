@@ -26,6 +26,9 @@
             <div th:if="${endpoint == 'tools'}">
                 <div th:replace="~{fragments/button :: tools}" class="button"></div>
             </div>
+            <div th:if="${endpoint == 'competences'}">
+                <div th:replace="~{fragments/button :: competences}" class="button"></div>
+            </div>
         </div>
 
         <!-- Center Content -->
@@ -43,7 +46,6 @@
             <div th:if="${endpoint == 'competences'}">
                 <div th:replace="~{fragments/competence-form :: competence-form}"></div>
             </div>
-
             <div th:if="${endpoint == 'create-project-form'}">
                 <div th:replace="~{fragments/create-forms :: create-project-form}"></div>
             </div>
