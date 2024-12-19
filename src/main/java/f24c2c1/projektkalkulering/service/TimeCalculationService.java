@@ -54,9 +54,9 @@ public class TimeCalculationService {
      *
      * @return the total time estimate in hours.
      */
-    public double calculateTotalEstimateForAllProjects() {
+    public int calculateTotalEstimateForAllProjects() {
         List<Project> projects = projectService.getAllProjects();
-        double totalEstimate = 0;
+        int totalEstimate = 0;
 
         for (Project project : projects) {
             if (project.isSubProject()) {
@@ -79,8 +79,8 @@ public class TimeCalculationService {
      * @param project the main project.
      * @return the total time estimate in hours.
      */
-    public double calculateTotalEstimateForProjectAndTasks(Project project) {
-        double totalEstimate = calculateEstimateForProjectTasks(project);
+    public int calculateTotalEstimateForProjectAndTasks(Project project) {
+        int totalEstimate = calculateEstimateForProjectTasks(project);
 
         for (Project subProject : project.getSubProjects()) {
             totalEstimate += calculateEstimateForProjectTasks(subProject);
@@ -95,8 +95,8 @@ public class TimeCalculationService {
      * @param project the project whose tasks need to be estimated.
      * @return the total time estimate in hours.
      */
-    public double calculateEstimateForProjectTasks(Project project) {
-        double taskEstimate = 0;
+    public int calculateEstimateForProjectTasks(Project project) {
+        int taskEstimate = 0;
         Project detailedProject = projectService.getProjectById(project.getId());
 
         for (Task task : detailedProject.getTasks()) {
@@ -113,7 +113,7 @@ public class TimeCalculationService {
      * @param estimate  the total time estimate in hours.
      * @return the calculated completion date.
      */
-    public LocalDate calculateCompletionDate(LocalDate startDate, double estimate) {
+    public LocalDate calculateCompletionDate(LocalDate startDate, int estimate) {
         final int dailyWorkHours = 8;
         int workdaysNeeded = (int) Math.ceil(estimate / dailyWorkHours);
         LocalDate completionDate = startDate;

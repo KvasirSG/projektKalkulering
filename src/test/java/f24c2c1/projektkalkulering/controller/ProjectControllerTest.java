@@ -176,15 +176,15 @@ public class ProjectControllerTest {
         testProject.setSubProjects(subprojects);
 
         when(projectService.getProjectById(1L)).thenReturn(testProject);
-        when(timeCalculationService.calculateTotalEstimateForProjectAndTasks(testProject)).thenReturn(100.0);
+        when(timeCalculationService.calculateTotalEstimateForProjectAndTasks(testProject)).thenReturn(100);
         // For subproject estimates:
-        when(timeCalculationService.calculateEstimateForProjectTasks(testSubProject)).thenReturn(20.0);
+        when(timeCalculationService.calculateEstimateForProjectTasks(testSubProject)).thenReturn(20);
 
         mockMvc.perform(get("/projects/1"))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("totalEstimate", "endpoint", "project", "tasks", "subprojects", "tasksByProject", "subprojectEstimate"))
                 .andExpect(model().attribute("endpoint", "project-details"))
-                .andExpect(model().attribute("totalEstimate", 100.0))
+                .andExpect(model().attribute("totalEstimate", 100))
                 .andExpect(view().name("layout"));
 
         verify(projectService, times(1)).getProjectById(1L);
